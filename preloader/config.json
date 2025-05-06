@@ -1,0 +1,60 @@
+{
+    "importBase": "import",
+    "nativeBase": "native",
+    "name": "preloader",
+    "deps": [],
+    "uuids": [
+        "0ca08b297",
+        "62c32d72-25a7-4ca4-be68-ed1b24fc2b37",
+        "62c32d72-25a7-4ca4-be68-ed1b24fc2b37@9c209",
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff",
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff@6c48a",
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff@f9941"
+    ],
+    "paths": {
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff": [
+            "images/common_preloaderbg",
+            "cc.ImageAsset",
+            1
+        ],
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff@6c48a": [
+            "images/common_preloaderbg/texture",
+            "cc.Texture2D",
+            1
+        ],
+        "6c37b8c8-15f9-4c60-880a-c227e75dfcff@f9941": [
+            "images/common_preloaderbg/spriteFrame",
+            "cc.SpriteFrame",
+            1
+        ],
+        "62c32d72-25a7-4ca4-be68-ed1b24fc2b37": [
+            "images/common_preloaderbg",
+            "cc.SpriteAtlas",
+            1
+        ],
+        "62c32d72-25a7-4ca4-be68-ed1b24fc2b37@9c209": [
+            "images/common_preloaderbg/Dark_purple_landscape",
+            "cc.SpriteFrame",
+            1
+        ]
+    },
+    "scenes": {},
+    "packs": {
+        "0ca08b297": [
+            "62c32d72-25a7-4ca4-be68-ed1b24fc2b37",
+            "62c32d72-25a7-4ca4-be68-ed1b24fc2b37@9c209",
+            "6c37b8c8-15f9-4c60-880a-c227e75dfcff",
+            "6c37b8c8-15f9-4c60-880a-c227e75dfcff@6c48a",
+            "6c37b8c8-15f9-4c60-880a-c227e75dfcff@f9941"
+        ]
+    },
+    "versions": {
+        "import": [],
+        "native": []
+    },
+    "redirect": [],
+    "debug": true,
+    "extensionMap": {},
+    "hasPreloadScript": true,
+    "dependencyRelationships": {}
+}
