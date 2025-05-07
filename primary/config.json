@@ -1,0 +1,123 @@
+{
+    "importBase": "import",
+    "nativeBase": "native",
+    "name": "primary",
+    "deps": [],
+    "uuids": [
+        "08420214e",
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6",
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@098d7",
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@11680",
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@5c348",
+        "32b626a3-da53-4188-97ae-3402d68214d3",
+        "32b626a3-da53-4188-97ae-3402d68214d3@49df1",
+        "32b626a3-da53-4188-97ae-3402d68214d3@4c659",
+        "32b626a3-da53-4188-97ae-3402d68214d3@6304f",
+        "ead9a37b-1fec-48da-8221-397a6e8c495e",
+        "ead9a37b-1fec-48da-8221-397a6e8c495e@6c48a",
+        "ead9a37b-1fec-48da-8221-397a6e8c495e@f9941",
+        "f789257d-8e7f-4784-9059-969d50e2c374",
+        "f789257d-8e7f-4784-9059-969d50e2c374@6c48a",
+        "f789257d-8e7f-4784-9059-969d50e2c374@f9941"
+    ],
+    "paths": {
+        "ead9a37b-1fec-48da-8221-397a6e8c495e": [
+            "images/gamebgs-0",
+            "cc.ImageAsset",
+            1
+        ],
+        "ead9a37b-1fec-48da-8221-397a6e8c495e@6c48a": [
+            "images/gamebgs-0/texture",
+            "cc.Texture2D",
+            1
+        ],
+        "ead9a37b-1fec-48da-8221-397a6e8c495e@f9941": [
+            "images/gamebgs-0/spriteFrame",
+            "cc.SpriteFrame",
+            1
+        ],
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6": [
+            "images/gamebgs-0",
+            "cc.SpriteAtlas",
+            1
+        ],
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@11680": [
+            "images/gamebgs-0/v2",
+            "cc.SpriteFrame",
+            1
+        ],
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@5c348": [
+            "images/gamebgs-0/bg1",
+            "cc.SpriteFrame",
+            1
+        ],
+        "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@098d7": [
+            "images/gamebgs-0/bg3",
+            "cc.SpriteFrame",
+            1
+        ],
+        "f789257d-8e7f-4784-9059-969d50e2c374": [
+            "images/gamebgs-1",
+            "cc.ImageAsset",
+            1
+        ],
+        "f789257d-8e7f-4784-9059-969d50e2c374@6c48a": [
+            "images/gamebgs-1/texture",
+            "cc.Texture2D",
+            1
+        ],
+        "f789257d-8e7f-4784-9059-969d50e2c374@f9941": [
+            "images/gamebgs-1/spriteFrame",
+            "cc.SpriteFrame",
+            1
+        ],
+        "32b626a3-da53-4188-97ae-3402d68214d3": [
+            "images/gamebgs-1",
+            "cc.SpriteAtlas",
+            1
+        ],
+        "32b626a3-da53-4188-97ae-3402d68214d3@4c659": [
+            "images/gamebgs-1/bg2",
+            "cc.SpriteFrame",
+            1
+        ],
+        "32b626a3-da53-4188-97ae-3402d68214d3@6304f": [
+            "images/gamebgs-1/v1",
+            "cc.SpriteFrame",
+            1
+        ],
+        "32b626a3-da53-4188-97ae-3402d68214d3@49df1": [
+            "images/gamebgs-1/v3",
+            "cc.SpriteFrame",
+            1
+        ]
+    },
+    "scenes": {},
+    "packs": {
+        "08420214e": [
+            "0ee3a1d3-bbc1-427d-918b-adc5701d60b6",
+            "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@098d7",
+            "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@11680",
+            "0ee3a1d3-bbc1-427d-918b-adc5701d60b6@5c348",
+            "32b626a3-da53-4188-97ae-3402d68214d3",
+            "32b626a3-da53-4188-97ae-3402d68214d3@49df1",
+            "32b626a3-da53-4188-97ae-3402d68214d3@4c659",
+            "32b626a3-da53-4188-97ae-3402d68214d3@6304f",
+            "ead9a37b-1fec-48da-8221-397a6e8c495e",
+            "ead9a37b-1fec-48da-8221-397a6e8c495e@6c48a",
+            "ead9a37b-1fec-48da-8221-397a6e8c495e@f9941",
+            "f789257d-8e7f-4784-9059-969d50e2c374",
+            "f789257d-8e7f-4784-9059-969d50e2c374@6c48a",
+            "f789257d-8e7f-4784-9059-969d50e2c374@f9941"
+        ]
+    },
+    "versions": {
+        "import": [],
+        "native": []
+    },
+    "redirect": [],
+    "debug": true,
+    "extensionMap": {},
+    "hasPreloadScript": true,
+    "dependencyRelationships": {}
+}
