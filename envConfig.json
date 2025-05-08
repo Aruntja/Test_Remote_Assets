@@ -6,7 +6,7 @@
     "historyURL" : "https://history.microslot.co/game-history",
     "historyAPIURL": "https://service.microslot.co/publicapi/reports/inGame/betHistory",
     "tableHistoryAPIURL": "https://service.microslot.co/publicapi/reports/inGame/tableBetHistory",
-    "assetBasePath": "https://games.microslot.co/assets/",
+    "assetBasePath": "https://games-cc.microslot.co/assets",
     "sidePanelAPIURL": "https://service.microslot.co/publicapi/sideBar/freeSpins/claimStatus",
     "sidePanelContenURL": "https://public.microslot.co"
   }},
