@@ -11,6 +11,7 @@ export class GameState extends BaseState {
 	async onEnter(): Promise<void> {
 		await UIUtil.delay(500);
 		GameManager.instance.changeScene('LobbyScene')
+		// GameManager.instance.changeScene('GameScene')
 	}
 
 	onExit(): void {}
