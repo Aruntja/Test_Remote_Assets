@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>Dark_purple_landscape</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{3116,1440}</string>
+                <key>spriteSourceSize</key>
+                <string>{3116,1440}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{3116,1440}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGB888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>common_preloaderbg.jpg</string>
+            <key>size</key>
+            <string>{3118,1442}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:42850d5530dcf21f5c2b93176cfb2176:c4998169c09fb90ad330ec73107b2e9f:761e91ef9828b11a494b27aee244a52a$</string>
+            <key>textureFileName</key>
+            <string>common_preloaderbg.jpg</string>
+        </dict>
+    </dict>
+</plist>

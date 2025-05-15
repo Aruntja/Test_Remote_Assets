@@ -1,0 +1,46 @@
+[
+  {"name": [ "localhost", "gamesv2.microslot.co", "games.microslot.co" ], "config" : {
+    "passPhrase" : "microslot1234",
+    "baseURL" : "https://service.microslot.co",
+    "socketURL" : "wss://service.microslot.co",
+    "historyURL" : "https://history.microslot.co/game-history",
+    "historyAPIURL": "https://service.microslot.co/publicapi/reports/inGame/betHistory",
+    "tableHistoryAPIURL": "https://service.microslot.co/publicapi/reports/inGame/tableBetHistory",
+    "assetBasePath": "https://games.microslot.co/assets/",
+    "sidePanelAPIURL": "https://service.microslot.co/publicapi/sideBar/freeSpins/claimStatus",
+    "sidePanelContenURL": "https://public.microslot.co"
+  }},
+  {"name": [ "games.microslot.org" ], "config" : {
+    "passPhrase" : "microslot1234",
+    "baseURL" : "https://service.microslot.org",
+    "socketURL" : "wss://service.microslot.org",
+    "historyURL" : "https://history.microslot.org/game-history/",
+    "historyAPIURL": "https://service.microslot.org/publicapi/reports/inGame/betHistory",
+    "tableHistoryAPIURL": "https://service.microslot.org/publicapi/reports/inGame/tableBetHistory",
+    "assetBasePath": "https://games.microslot.org/assets/",
+    "sidePanelAPIURL": "https://service.microslot.org/publicapi/sideBar/freeSpins/claimStatus",
+    "sidePanelContenURL": "https://public.microslot.org"
+  }},
+  {"name": [ "games.msslot.org" ], "config" : {
+    "passPhrase" : "microslot1234",
+    "baseURL" : "https://service.msslot.org",
+    "socketURL" : "wss://service.msslot.org",
+    "historyURL" : "https://history.msslot.org/game-history/",
+    "historyAPIURL": "https://service.msslot.org/publicapi/reports/inGame/betHistory",
+    "tableHistoryAPIURL": "https://service.msslot.org/publicapi/reports/inGame/tableBetHistory",
+    "assetBasePath": "https://games.msslot.org/assets/",
+    "sidePanelAPIURL": "https://service.msslot.org/publicapi/sideBar/freeSpins/claimStatus",
+    "sidePanelContenURL": "https://public.msslot.org"
+  }},
+  {"name": [ "games-p.msslot.org" ], "config" : {
+    "passPhrase" : "microslot1234",
+    "baseURL" : "https://service.msslot.org",
+    "socketURL" : "wss://service.msslot.org",
+    "historyURL" : "https://history.msslot.org/game-history/",
+    "historyAPIURL": "https://service.msslot.org/publicapi/reports/inGame/betHistory",
+    "tableHistoryAPIURL": "https://service.msslot.org/publicapi/reports/inGame/tableBetHistory",
+    "assetBasePath": "https://games-p.msslot.org/assets/",
+    "sidePanelAPIURL": "https://service.msslot.org/publicapi/sideBar/freeSpins/claimStatus",
+    "sidePanelContenURL": "https://public.msslot.org"
+  }}
+]
