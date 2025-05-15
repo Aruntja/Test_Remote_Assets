@@ -10,7 +10,7 @@ export class GameState extends BaseState {
 
 	async onEnter(): Promise<void> {
 		await UIUtil.delay(500);
-		GameManager.instance.changeScene('GameScene')
+		GameManager.instance.changeScene('LobbyScene')
 	}
 
 	onExit(): void {}
@@ -18,4 +18,6 @@ export class GameState extends BaseState {
 	update(dt: number): void {
 		this.subMachine.update(dt);
 	}
+    setupEventListeners(): void {
+    }
 }

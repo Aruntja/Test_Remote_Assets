@@ -1,9 +1,11 @@
 import { _decorator, Component, Node, Prefab, instantiate, SpriteFrame, Vec3, UITransform } from 'cc';
 import { Reel } from './Reel';
+import {BoardManager} from "db://assets/scripts/managers/BoardManager";
 const { ccclass, property } = _decorator;
 
 @ccclass('SlotMachine')
 export class SlotMachine extends Component {
+
 
 	@property(Prefab)
 	reelPrefab: Prefab = null;
@@ -27,6 +29,7 @@ export class SlotMachine extends Component {
 	symbols: SpriteFrame[] = [];
 
 
+	private _boardManager: BoardManager = null
 	public reelWidth: number = 0;
 	private reels: Reel[] = [];
 	private finishedReels = 0;
@@ -49,8 +52,9 @@ export class SlotMachine extends Component {
 		const offsetX = -(this.columns - 1) * this.reelWidth * 0.5;
 
 		const columnOffsetMap: Record<number, number> = {
-			0: -10,
-			[this.columns - 1]: 10
+			0: -7,
+			1: -2,
+			[this.columns - 1]:4
 		};
 
 		for (let i = 0; i < this.columns; i++) {
@@ -74,7 +78,7 @@ export class SlotMachine extends Component {
 
 	public async spin() {
 		this.finishedReels = 0;
-
+		this._boardManager.isSpinning = true;
 		for (let i = 0; i < this.reels.length; i++) {
 			this.reels[i].startSpin();
 		}
@@ -89,6 +93,7 @@ export class SlotMachine extends Component {
 				this.reels[i].stopSpin(() => {
 					this.finishedReels++;
 					if (this.finishedReels === this.reels.length) {
+						this._boardManager.onReelSpinComplete()
 						console.log('🎉 All reels stopped');
 					}
 				});
@@ -102,6 +107,8 @@ export class SlotMachine extends Component {
 	}
 
 	//Getters and setters
-
+	set boardManager(value: BoardManager) {
+		this._boardManager = value;
+	}
 
 }

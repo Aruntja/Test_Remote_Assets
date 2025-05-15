@@ -1,11 +1,12 @@
 import { _decorator, instantiate, Component, Node, Prefab, SpriteFrame, UITransform, Vec3 } from 'cc';
+const { ccclass, property } = _decorator;
 import { EventBus } from '../core/EventBus';
 import { BoardTile } from 'db://assets/scripts/ui/BoardTile';
-
-const { ccclass, property } = _decorator;
+import {BoardManager} from "db://assets/scripts/managers/BoardManager";
 
 @ccclass('MarqueeRing')
 export class MarqueeRing extends Component {
+
 	@property(Prefab)
 	tilePrefab: Prefab = null;
 
@@ -22,6 +23,8 @@ export class MarqueeRing extends Component {
 	iconFrames: SpriteFrame[] = [];
 
 	tilePositions: Vec3[] = [];
+
+	private _boardManager: BoardManager = null
 
 	private _tiles: BoardTile[] = [];
 	private _glowIndex: number = 0;
@@ -93,7 +96,7 @@ export class MarqueeRing extends Component {
 				tileNode.setScale(1.3,1.3)
 				if(i == 17){
 					tileNode.getComponent(UITransform).setAnchorPoint(0.4, 0.4)
-					tileNode.setScale(1.35,1.35)
+					tileNode.setScale(1.4,1.3)
 
 				}
 			}
@@ -145,12 +148,10 @@ export class MarqueeRing extends Component {
 
 	private _scheduleNextGlow(): void {
 		if (!this._isGlowing || this._tiles.length === 0) return;
-
 		this._tiles.forEach(tile => tile.setActiveGlow(false));
 		this._tiles[this._glowIndex].setActiveGlow(true);
-
 		this._glowIndex = (this._glowIndex + 1) % this._tiles.length;
-
+		if(this._boardManager)this._boardManager.updateCurrentTile()
 		this.scheduleOnce(() => {
 			this._scheduleNextGlow();
 		}, this._glowInterval);
@@ -175,5 +176,8 @@ export class MarqueeRing extends Component {
 
 	public get tiles(): BoardTile[] {
 		return this._tiles;
+	}
+	set boardManager(value: BoardManager) {
+		this._boardManager = value;
 	}
 }
