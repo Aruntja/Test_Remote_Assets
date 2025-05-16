@@ -20,6 +20,7 @@ export class LobbyService extends Component {
 		this.topBarService.lobbyService = this
 		this.betButtonsService.lobbyService = this
 		this.bottomBarService.lobbyService = this
+		this.startTimer()
 	}
 	startTimer(){
 		console.log("Start Timer")
