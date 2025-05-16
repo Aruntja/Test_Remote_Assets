@@ -99,7 +99,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 75,
-      "y": 35,
+      "y": 30,
       "z": 0
     },
     "_lrot": {
@@ -139,8 +139,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 61.64453125,
-      "height": 56.4
+      "width": 110,
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -182,7 +182,7 @@
     "_fontSize": 44,
     "_fontFamily": "Lucida Sans  Unicode",
     "_lineHeight": 40,
-    "_overflow": 0,
+    "_overflow": 2,
     "_enableWrapText": false,
     "_font": null,
     "_isSystemFontUsed": true,
@@ -437,8 +437,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.822265625,
-      "height": 50.4
+      "width": 110,
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -480,7 +480,7 @@
     "_fontSize": 44,
     "_fontFamily": "Lucida Sans  Unicode",
     "_lineHeight": 40,
-    "_overflow": 0,
+    "_overflow": 2,
     "_enableWrapText": false,
     "_font": null,
     "_isSystemFontUsed": true,
@@ -707,6 +707,7 @@
       "__id__": 0
     },
     "fileId": "14FAERB3NEhYgON7FwSuS7",
+    "instance": null,
     "targetOverrides": null
   }
 ]

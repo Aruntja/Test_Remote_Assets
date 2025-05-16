@@ -1,4 +1,4 @@
-import { _decorator, Component, SpriteFrame, Node, Prefab, instantiate } from 'cc';
+import { _decorator, Component, Button, Node, Prefab, instantiate } from 'cc';
 import {LobbyService} from "db://assets/scripts/ui/Services/LobbyService";
 import {BetChipBar} from "db://assets/scripts/ui/BetChipBar";
 
@@ -14,19 +14,29 @@ export class BottomBarService extends Component {
 	@property (BetChipBar)
 	betChipBar: BetChipBar = null
 
+	@property (Button)
+	repeatButton: Button = null
+	@property (Button)
+	removeButton: Button = null
+	@property (Button)
+	clearButton: Button = null
+	@property (Button)
+	autoBetButton: Button = null
+
 	onLoad(){}
 	//Getters and  Setters
 	set lobbyService(value: LobbyService) {
 		this._lobbyService = value;
 	}
 
-	start(){
-		console.log(this.selectedBetAmount)
-	}
+	start(){}
 
 	//Getters and Setters
 	get selectedBetAmount(): number {
 		return this.betChipBar.selectedBetAmount;
 	}
 
+	updateButtonsInteractivity() {
+		this.clearButton.interactable = this._lobbyService.totalBetAmount > 0
+	}
 }

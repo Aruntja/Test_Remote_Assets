@@ -3,12 +3,16 @@ import {BetType} from "db://assets/scripts/enums/BetOptions";
 import {BetOptionChip} from "db://assets/scripts/ui/BetOptionChip";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
 import {LobbyService} from "db://assets/scripts/ui/Services/LobbyService";
+import {Timer} from "db://assets/scripts/systems/Timer";
 
 
 const {ccclass, property} = _decorator;
 
 @ccclass('TopBarService')
 export class TopBarService extends Component {
+
+	@property({type: Timer})
+	gameTimer: Timer = null;
 
 	@property({type: [SpriteFrame]})
 	betChipOptions: SpriteFrame[] = [];
@@ -48,4 +52,10 @@ export class TopBarService extends Component {
 	}
 
 
+	startTimer() {
+		this.gameTimer.startTimer(15, ()=>{
+			this._lobbyService.betTimeOut = true;
+			this.gameTimer.reset()
+		})
+	}
 }

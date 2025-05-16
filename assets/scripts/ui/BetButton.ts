@@ -1,12 +1,15 @@
 import { _decorator, Component, Sprite, Label, Enum, tween, Vec3 } from 'cc';
 import {BetType, BetCharacters} from "db://assets/scripts/enums/BetOptions";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
+import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
+
 
 
 const { ccclass, property } = _decorator;
 
 @ccclass('BetButton')
 export class BetButton extends Component {
+
 
 	@property(Sprite)
 	background!: Sprite;
@@ -29,6 +32,8 @@ export class BetButton extends Component {
 
 	private _buttonsService: BetButtonsService = null;
 	private iconOriginalScale: any;
+	private _selected: boolean;
+	private _totalBetAmount: number = 0
 
 
 
@@ -53,18 +58,15 @@ export class BetButton extends Component {
 		this.iconOriginalScale = this.icon.node.getScale().clone();
 	}
 
-	setSelected(isSelected: boolean) {
-		
+	showBetAmount(amount: number){
+		this._totalBetAmount += amount;
+		this.labelBetAmount.string = this._totalBetAmount.toString();
 	}
 
-	//Getters and Setters
-	set buttonsService(value: BetButtonsService) {
-		this._buttonsService = value;
-	}
 	animateClick() {
 		if (!this.icon) return;
 
-	 // Clone to avoid mutation
+		// Clone to avoid mutation
 		const zoomedScale = this.iconOriginalScale.clone().multiplyScalar(1.2); // 20% larger
 
 		tween(this.icon.node)
@@ -72,6 +74,19 @@ export class BetButton extends Component {
 		.to(0.1, { scale: this.iconOriginalScale }, { easing: 'quadIn' }) // Zoom out
 		.start();
 	}
+
+	//Getters and Setters
+	set buttonsService(value: BetButtonsService) {
+		this._buttonsService = value;
+	}
+	get selected(): boolean {
+		return this._selected;
+	}
+
+	set selected(value: boolean) {
+		this._selected = value;
+	}
+
 
 
 }
