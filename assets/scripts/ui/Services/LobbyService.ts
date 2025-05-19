@@ -2,6 +2,8 @@ import { _decorator, Component } from 'cc';
 import {TopBarService} from "db://assets/scripts/ui/Services/TopBarService";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
 import {BottomBarService} from "db://assets/scripts/ui/Services/BottomBarService";
+import {EventBus} from "db://assets/scripts/core/EventBus";
+import {GameEvents} from "db://assets/scripts/events/GameEvents";
 
 
 const {ccclass, property} = _decorator;
@@ -19,7 +21,7 @@ export class LobbyService extends Component {
 	bottomBarService: BottomBarService = null;
 
 	private _totalBetAmount: number = 0;
-	private _betTimeOut: boolean = false;
+	private _betTimerCountDownDone: boolean = false;
 
 	onLoad(){
 		this.topBarService.lobbyService = this
@@ -30,6 +32,11 @@ export class LobbyService extends Component {
 	startTimer(){
 		this.topBarService.startTimer()
 		console.log("Start Timer")
+	}
+
+	betClosed(){
+		this._betTimerCountDownDone = false;
+		EventBus.emit(GameEvents.ON_BET_COUNTDOWN_ENDED)
 	}
 
 	set totalBetAmount(value: number) {
@@ -50,8 +57,8 @@ export class LobbyService extends Component {
 	get totalBetAmount(): number {
 		return this._totalBetAmount;
 	}
-	set betTimeOut(value: boolean) {
-		this._betTimeOut = value;
+	set betTimerCountDownDone(value: boolean) {
+		this._betTimerCountDownDone = value;
 	}
 
 }

@@ -21,6 +21,7 @@ export class BoardManager extends Component {
 
     private _initializationComplete: boolean;
     private _isSpinning: boolean;
+    private _isMarqueeSpinning: boolean;
 
     async start() {
         await this._initializeComponents()
@@ -35,6 +36,7 @@ export class BoardManager extends Component {
             if(this.marqueeRing) await this.marqueeRing.createBoardTiles()
             if(this.slotMachine) await this.slotMachine._createReels()
             this.marqueeRing.startGlowLoop()
+            this._isMarqueeSpinning = true
             await this.slotMachine.spin()
         } catch (error) {
             console.error("Initialization failed:", error);
@@ -49,13 +51,14 @@ export class BoardManager extends Component {
     updateCurrentTile() {
         this.winImage.spriteFrame = this.winImages[Math.floor(Math.random() * this.winImages.length)];
     }
-    onReelSpinComplete(){
+    async onReelSpinComplete(){
         this.isSpinning = false;
-        this.marqueeRing.setGlowInterval(0.1)
+        await this.marqueeRing.showWin(21)
     }
 
-
-
+    async marqueeRingSpinComplete() {
+        this._isMarqueeSpinning = false;
+    }
     //Getters and Setters
     get isInitialized(): boolean {
         return this._initializationComplete;

@@ -1,4 +1,4 @@
-import { _decorator, instantiate, Component, Node, Prefab, SpriteFrame, UITransform, Vec3 } from 'cc';
+import { _decorator, instantiate, Component, tween, v3, Prefab, SpriteFrame, UITransform, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 import { EventBus } from '../core/EventBus';
 import { BoardTile } from 'db://assets/scripts/ui/BoardTile';
@@ -30,6 +30,7 @@ export class MarqueeRing extends Component {
 	private _glowIndex: number = 0;
 	private _glowInterval: number = 0.3;
 	private _isGlowing: boolean = false;
+	private _targetIndex: number = null;
 
 	async start() {
 	}
@@ -152,6 +153,7 @@ export class MarqueeRing extends Component {
 		this._tiles[this._glowIndex].setActiveGlow(true);
 		this._glowIndex = (this._glowIndex + 1) % this._tiles.length;
 		if(this._boardManager)this._boardManager.updateCurrentTile()
+		if(this._targetIndex && this._glowIndex === this._targetIndex) this.stopGlowLoop()
 		this.scheduleOnce(() => {
 			this._scheduleNextGlow();
 		}, this._glowInterval);
@@ -168,6 +170,119 @@ export class MarqueeRing extends Component {
 			this._tiles[index].setActiveGlow(true);
 		}
 	}
+	private _delay(seconds: number): Promise<void> {
+		return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+	}
+	public async showWin(targetIndex: number): Promise<void> {
+		const totalTiles = this._tiles.length;
+		targetIndex = (targetIndex + totalTiles) % totalTiles;
+
+		this._isGlowing = false;
+		this.unscheduleAllCallbacks();
+
+		const currentIndex = this._glowIndex;
+		this.resetGlow();
+
+		// 🔁 Phase 1: Anticipation spin
+		const anticipationSteps = 2 * totalTiles + Math.floor(totalTiles / 2);
+		let current = currentIndex;
+
+		for (let step = 0; step < anticipationSteps; step++) {
+			current = (current + 1) % totalTiles;
+			this.updateGlow(current);
+			await this._delay(0.05);
+		}
+
+		// 🐢 Phase 2: Slow down to target
+		const minFinalSteps = 6;
+		let neededSteps = (targetIndex - current + totalTiles) % totalTiles;
+
+		if (neededSteps < minFinalSteps) {
+			neededSteps += totalTiles; // force one extra full loop to ensure nice slow-down
+		}
+
+		for (let step = 0; step < neededSteps; step++) {
+			const progress = step / neededSteps;
+			const speed = 0.1 + (0.4 * Math.pow(progress, 3)); // cubic ease-out
+			current = (current + 1) % totalTiles;
+			this.updateGlow(current);
+			await this._delay(speed);
+		}
+
+		this.highlightTile(targetIndex);
+		this._glowIndex = targetIndex;
+		this._boardManager.marqueeRingSpinComplete()
+	}
+
+
+	// private getShortestDirection(current: number, target: number, total: number): boolean {
+	// 	if (current >= 0 && current <= 8 && target >= 13) return true;
+	// 	if (current >= 22 && target <= 8) return true;
+	//
+	// 	const forwardDist = (target - current + total) % total;
+	// 	const backwardDist = (current - target + total) % total;
+	// 	console.log(`Direction Check: Current=${current}, Target=${target}, Forward=${forwardDist}, Backward=${backwardDist}, Clockwise=${forwardDist <= backwardDist}`);
+	// 	return forwardDist <= backwardDist;
+	// }
+
+	// private async animateSelection(
+	// 	startIndex: number,
+	// 	targetIndex: number,
+	// 	totalSteps: number,
+	// 	totalTiles: number,
+	// 	clockwise: boolean
+	// ) {
+	// 	let current = startIndex;
+	//
+	// 	const anticipationSteps = 2 * totalTiles;
+	// 	for (let step = 0; step < anticipationSteps; step++) {
+	// 		current = (current + 1) % totalTiles;
+	// 		this.updateGlow(current);
+	// 		await this._delay(0.05);
+	// 	}
+	//
+	// 	const neededSteps = this.calculateSteps(current, targetIndex, totalTiles, clockwise);
+	// 	for (let step = 0; step < neededSteps; step++) {
+	// 		current = clockwise
+	// 			? (current + 1) % totalTiles
+	// 			: (current - 1 + totalTiles) % totalTiles;
+	//
+	// 		const progress = step / neededSteps;
+	// 		const speed = 0.1 + (0.4 * Math.pow(progress, 3));
+	//
+	// 		this.updateGlow(current);
+	// 		await this._delay(speed);
+	// 	}
+	// }
+
+	// private calculateSteps(current: number, target: number, total: number, clockwise: boolean): number {
+	// 	return clockwise
+	// 		? (target - current + total) % total
+	// 		: (current - target + total) % total;
+	// }
+
+	private updateGlow(index: number) {
+		this.resetGlow();
+		const tile = this._tiles[index];
+		tile.setActiveGlow(true);
+		this._boardManager.updateCurrentTile()
+
+		// Add visual feedback
+
+		// Trail effect: light up current and previous tiles slightly
+		const prev1 = (index - 1 + this._tiles.length) % this._tiles.length;
+		const prev2 = (index - 2 + this._tiles.length) % this._tiles.length;
+
+		this._tiles[prev2].setGlowOpacity?.(0.2); // If you implement this
+		this._tiles[prev1].setGlowOpacity?.(0.5);
+		this._tiles[index].setGlowOpacity?.(1.0);
+
+		tween(tile.node)
+		.to(0.1, { scale: v3(1.2, 1.2, 1) })
+		.to(0.1, { scale: v3(1, 1, 1) })
+		.start();
+	}
+
 
 	//getters and setters
 	public get tileCount(): number {
@@ -180,4 +295,5 @@ export class MarqueeRing extends Component {
 	set boardManager(value: BoardManager) {
 		this._boardManager = value;
 	}
+
 }

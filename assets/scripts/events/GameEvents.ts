@@ -6,4 +6,5 @@ export enum GameEvents {
 	SHOW_RESULT = 'show-result',
 	ASSETS_LOADED = 'loaded-assets',
 	ON_LOAD_PROGRESS = 'load-progress',
+	ON_BET_COUNTDOWN_ENDED = 'bet-countdown-ended',
 }

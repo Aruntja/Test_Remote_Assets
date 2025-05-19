@@ -37,7 +37,7 @@ export class Timer extends Component {
 		this.infoLabel.string = '';
 		this.fadeIn(this.timerLabel.node);
 		this.fadeOut(this.infoLabel.node);
-		this.updateLabel();
+		this.updateLabel(15);
 	}
 
 	update(deltaTime: number) {

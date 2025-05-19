@@ -1,4 +1,4 @@
-import {_decorator, director} from 'cc';
+import {_decorator, director, instantiate, Prefab, Node, UIOpacity, tween} from 'cc';
 import {StateMachine} from '../state/StateMachine';
 import {ComponentSingleton} from '../core/ComponentSingleton';
 import {AssetLoader} from "db://assets/scripts/core/AssetLoader";
@@ -7,8 +7,10 @@ import {States} from "db://assets/scripts/state/States";
 import {MainState} from "db://assets/scripts/state/MainState";
 import {GameNetworkHandler} from "db://assets/scripts/network/GameNetworkHandler";
 import {EnvConfigProxy} from "db://assets/scripts/env/EnvConfig";
+import {EventBus} from "db://assets/scripts/core/EventBus";
+import {GameEvents} from "db://assets/scripts/events/GameEvents";
 
-const { ccclass } = _decorator;
+const { ccclass,property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends ComponentSingleton<GameManager> {
@@ -19,6 +21,11 @@ export class GameManager extends ComponentSingleton<GameManager> {
     private machine = new StateMachine();
     private _assetLoader = new AssetLoader();
     private _gameNetworkHandler = new GameNetworkHandler(this);
+
+    private _loadingScreen: Node | null = null;
+
+    @property ({type: Prefab})
+    loadingScreenPrefab: Prefab | null = null;
 
     onLoad() {
         super.onLoad();
@@ -50,16 +57,56 @@ export class GameManager extends ComponentSingleton<GameManager> {
     update(dt: number) {
         this.machine.update(dt);
     }
-    public changeScene(name: string) {
-        console.log(`[GameManager] Changing scene to: ${name}`);
-        director.loadScene(name);
+    public async changeScene(name: string) {
+        // await this._showLoadingScreen();
+        // console.log(`[GameManager] Changing scene to: ${name}`);
+        await director.loadScene(name);
+        // await new Promise(resolve => setTimeout(resolve, 300));
+        // this._hideLoadingScreen();
     }
-
-
     private _setupEventListeners() {
-
+        EventBus.on(GameEvents.ON_BET_COUNTDOWN_ENDED, this.onCountDownTimerEnded.bind(this))
     }
 
+    private async onCountDownTimerEnded(){
+        await this._showLoadingScreen()
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        this._hideLoadingScreen();
+        await this.changeScene('GameScene')
+    }
+
+    private async _showLoadingScreen() {
+
+        if (this.loadingScreenPrefab && !this._loadingScreen) {
+            this._loadingScreen = instantiate(this.loadingScreenPrefab);
+            director.getScene().addChild(this._loadingScreen);
+            director.addPersistRootNode(this._loadingScreen);
+        }else{
+            const uiOpacity = this._loadingScreen.getComponent(UIOpacity);
+            if (uiOpacity) {
+                uiOpacity.opacity = 0;
+                tween(uiOpacity).to(0.3, { opacity: 255 }).start();
+            }
+        }
+    }
+
+    private _hideLoadingScreen() {
+        if (this._loadingScreen) {
+            const uiOpacity = this._loadingScreen.getComponent(UIOpacity);
+            if (uiOpacity) {
+                tween(uiOpacity)
+                .to(0.3, { opacity: 0 })
+                .call(() => {
+                    this._loadingScreen?.destroy();
+                    this._loadingScreen = null;
+                })
+                .start();
+            } else {
+                this._loadingScreen.destroy();
+                this._loadingScreen = null;
+            }
+        }
+    }
 
     //Getters & setters
     set initializationComplete(value: boolean) {
