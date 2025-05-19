@@ -1,7 +1,6 @@
-import { _decorator, Component, Sprite, Label, Enum, tween, Vec3 } from 'cc';
+import { _decorator, Component, Sprite, Label, Enum, tween } from 'cc';
 import {BetType, BetCharacters} from "db://assets/scripts/enums/BetOptions";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
-import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
 
 
 
@@ -35,6 +34,11 @@ export class BetButton extends Component {
 	private _selected: boolean;
 	private _totalBetAmount: number = 0
 
+	private _displayedAmount: number = 0;
+	private _tweenQueue: number[] = [];
+	private _isTweening: boolean = false;
+	private _progressObj = { value: 0 };
+
 
 
 	onLoad() {
@@ -60,18 +64,39 @@ export class BetButton extends Component {
 
 	showBetAmount(amount: number){
 		this._totalBetAmount += amount;
-		this.labelBetAmount.string = this._totalBetAmount.toString();
+		this._tweenQueue.push(this._totalBetAmount);
+		this._tryStartNextTween();
 	}
 
 	animateClick() {
 		if (!this.icon) return;
-
-		// Clone to avoid mutation
 		const zoomedScale = this.iconOriginalScale.clone().multiplyScalar(1.2); // 20% larger
-
 		tween(this.icon.node)
 		.to(0.1, { scale: zoomedScale }, { easing: 'quadOut' }) // Zoom in
 		.to(0.1, { scale: this.iconOriginalScale }, { easing: 'quadIn' }) // Zoom out
+		.start();
+	}
+
+	private _tryStartNextTween() {
+		if (this._isTweening || this._tweenQueue.length === 0) return;
+
+		const targetAmount = this._tweenQueue.shift()!;
+		this._isTweening = true;
+
+		this._progressObj.value = this._displayedAmount;
+
+		tween(this._progressObj)
+		.to(0.2, { value: targetAmount }, {
+			easing: 'quadOut',
+			onUpdate: () => {
+				this.labelBetAmount.string = Math.floor(this._progressObj.value).toString();
+			},
+			onComplete: () => {
+				this._displayedAmount = targetAmount;
+				this._isTweening = false;
+				this._tryStartNextTween();
+			}
+		})
 		.start();
 	}
 
@@ -86,6 +111,9 @@ export class BetButton extends Component {
 	set selected(value: boolean) {
 		this._selected = value;
 	}
+
+
+
 
 
 
