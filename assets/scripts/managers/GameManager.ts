@@ -70,7 +70,7 @@ export class GameManager extends ComponentSingleton<GameManager> {
     }
 
     private async onCountDownTimerEnded(){
-        this.machine.change(States.Game)
+        // this.machine.change(States.Game)
     }
 
     async _showLoadingScreen() {
