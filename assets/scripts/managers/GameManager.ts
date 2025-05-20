@@ -4,7 +4,6 @@ import {ComponentSingleton} from '../core/ComponentSingleton';
 import {AssetLoader} from "db://assets/scripts/core/AssetLoader";
 import {InitState} from "db://assets/scripts/state/InitState";
 import {States} from "db://assets/scripts/state/States";
-import {MainState} from "db://assets/scripts/state/MainState";
 import {GameNetworkHandler} from "db://assets/scripts/network/GameNetworkHandler";
 import {EnvConfigProxy} from "db://assets/scripts/env/EnvConfig";
 import {EventBus} from "db://assets/scripts/core/EventBus";
