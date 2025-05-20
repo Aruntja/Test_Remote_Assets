@@ -22,7 +22,6 @@ export class AssetLoader {
 	constructor() {}
 
 	public initAssets() {
-		console.log('-----------Init Assets----------');
 		this._baseAssetURL = `${GameConfig.env.assetBasePath}/${GameConfig.gameID}`
 		this.loadAssets('primary')
 	}

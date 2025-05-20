@@ -6,15 +6,15 @@ import {States} from "db://assets/scripts/state/States";
 export class InitState extends BaseState {
 	private subMachine: StateMachine = new StateMachine();
 
-	async onEnter(): Promise<void> {
+	async onEnterImpl(): Promise<void> {
 		await this.gameManager.gameNetworkHandler.requestGameInit();
 		this.subMachine.register(States.Loading, new InitAssetsState(this.subMachine, this.gameManager));
 		this.subMachine.change(States.Loading);
 	}
 
-	onExit() {
+	onExitImpl() {
+		this.subMachine.exit()
 		// cleanup
-		console.log("Existing AssetsInit State")
 	}
 
 	update(dt: number) {

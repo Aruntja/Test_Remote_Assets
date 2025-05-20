@@ -2,10 +2,12 @@ import { _decorator, Component, Input, Sprite, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 import {MarqueeRing} from "db://assets/scripts/game/MarqueeRing";
 import {SlotMachine} from "db://assets/scripts/game/SlotMachine";
+import { BetType } from '../enums/BetOptions';
+import {EventBus} from "db://assets/scripts/core/EventBus";
+import {GameEvents} from "db://assets/scripts/events/GameEvents";
 
 @ccclass('BoardManager')
 export class BoardManager extends Component {
-
 
 
     @property(MarqueeRing)
@@ -23,21 +25,25 @@ export class BoardManager extends Component {
     private _isSpinning: boolean;
     private _isMarqueeSpinning: boolean;
 
-    async start() {
-        await this._initializeComponents()
-        console.log(`----- Game Board Initialised -----`)
+    private startMainGameBind: () => void;
+
+    onLoad(){
+        this.startMainGameBind = this.startMainGame.bind(this)
+
     }
+    async start() {
+        this._setupEventListeners();
+        await this._initializeComponents()
+        console.log(`Game Board Initialised`)
+    }
+
 
     private async _initializeComponents(): Promise<void> {
         try {
-            this._setupEventListeners();
             this.marqueeRing.boardManager = this;
             this.slotMachine.boardManager = this;
-            if(this.marqueeRing) await this.marqueeRing.createBoardTiles()
-            if(this.slotMachine) await this.slotMachine._createReels()
-            this.marqueeRing.startGlowLoop()
-            this._isMarqueeSpinning = true
-            await this.slotMachine.spin()
+            this._initializationComplete = true;
+
         } catch (error) {
             console.error("Initialization failed:", error);
         }
@@ -45,19 +51,34 @@ export class BoardManager extends Component {
 
 
     private _setupEventListeners() {
-        
+        EventBus.on(GameEvents.START_MAIN_GAME, this.startMainGameBind)
     }
 
-    updateCurrentTile() {
-        this.winImage.spriteFrame = this.winImages[Math.floor(Math.random() * this.winImages.length)];
+    private async startMainGame() {
+        if (this.marqueeRing) await this.marqueeRing.createBoardTiles()
+        if (this.slotMachine) await this.slotMachine._createReels()
+         if(this.marqueeRing)   this.marqueeRing.startGlowLoop()
+        this._isMarqueeSpinning = true
+        await this.slotMachine.spin()
+    }
+    updateCurrentTile(betType: BetType) {
+        if(betType == BetType.SPECIAL) return;
+        this.winImage.spriteFrame = this.winImages[betType];
     }
     async onReelSpinComplete(){
         this.isSpinning = false;
-        await this.marqueeRing.showWin(21)
+        await this.marqueeRing.showWin(15)
     }
 
     async marqueeRingSpinComplete() {
         this._isMarqueeSpinning = false;
+        if(!this._isSpinning){
+            EventBus.emit(GameEvents.END_MAIN_GAME)
+        }
+    }
+    onDestroy() {
+        EventBus.off(GameEvents.START_MAIN_GAME, this.startMainGameBind)
+        this._initializationComplete = false;
     }
     //Getters and Setters
     get isInitialized(): boolean {

@@ -3,6 +3,7 @@ const { ccclass, property } = _decorator;
 import { EventBus } from '../core/EventBus';
 import { BoardTile } from 'db://assets/scripts/ui/BoardTile';
 import {BoardManager} from "db://assets/scripts/managers/BoardManager";
+import {MarqueeSymbolConfig} from "db://assets/scripts/enums/BetOptions";
 
 @ccclass('MarqueeRing')
 export class MarqueeRing extends Component {
@@ -21,6 +22,9 @@ export class MarqueeRing extends Component {
 
 	@property([SpriteFrame])
 	iconFrames: SpriteFrame[] = [];
+
+	@property([MarqueeSymbolConfig])
+	iconFrames1: MarqueeSymbolConfig[] = [];
 
 	tilePositions: Vec3[] = [];
 
@@ -85,11 +89,11 @@ export class MarqueeRing extends Component {
 			this.node.addChild(tileNode);
 			tileNode.setPosition(positions[i]);
 
-			const tile = tileNode.getComponent(BoardTile);
+			const tile: BoardTile = tileNode.getComponent(BoardTile);
 			tile.tileIndex = i;
 
-			if (this.iconFrames && this.iconFrames[i]) {
-				tile.setIcon(this.iconFrames[i]);
+			if (this.iconFrames1 && this.iconFrames1[i]) {
+				tile.setData(this.iconFrames1[i]);
 			}
 
 			this._tiles.push(tile);
@@ -120,13 +124,6 @@ export class MarqueeRing extends Component {
 		}
 	}
 
-	public updateTileIcon(index: number, newIcon: SpriteFrame) {
-		const tile = this._tiles[index];
-		if (tile) {
-			tile.setIcon(newIcon);
-		}
-	}
-
 	public getTile(index: number): BoardTile | null {
 		return this._tiles[index] || null;
 	}
@@ -150,9 +147,10 @@ export class MarqueeRing extends Component {
 	private _scheduleNextGlow(): void {
 		if (!this._isGlowing || this._tiles.length === 0) return;
 		this._tiles.forEach(tile => tile.setActiveGlow(false));
-		this._tiles[this._glowIndex].setActiveGlow(true);
+		const tile: BoardTile = this._tiles[this._glowIndex];
+		tile.setActiveGlow(true);
 		this._glowIndex = (this._glowIndex + 1) % this._tiles.length;
-		if(this._boardManager)this._boardManager.updateCurrentTile()
+		if(this._boardManager)this._boardManager.updateCurrentTile(tile.betType)
 		if(this._targetIndex && this._glowIndex === this._targetIndex) this.stopGlowLoop()
 		this.scheduleOnce(() => {
 			this._scheduleNextGlow();
@@ -265,7 +263,7 @@ export class MarqueeRing extends Component {
 		this.resetGlow();
 		const tile = this._tiles[index];
 		tile.setActiveGlow(true);
-		this._boardManager.updateCurrentTile()
+		this._boardManager.updateCurrentTile(tile.betType)
 
 		// Add visual feedback
 

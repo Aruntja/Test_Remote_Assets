@@ -6,10 +6,24 @@ export abstract class BaseState {
 	constructor(
 		protected machine: StateMachine,
 		protected gameManager: GameManager
-	) {}
+	) {
+		this.setupEventListeners()
+	}
+
+	// Logging with hook methods
+	onEnter(): void {
+		this.onEnterImpl?.();
+		console.log(`✅<--------------------- ${this.constructor.name} ---------------------> ✅`);
+	}
+
+	onExit(): void {
+		this.onExitImpl?.();
+		console.log(`❌<--------------------- ${this.constructor.name} ---------------------> ❌`);
+	}
+
+	protected onEnterImpl?(): void;
+	protected onExitImpl?(): void;
 
 	abstract setupEventListeners(): void;
-	abstract onEnter(): void;
-	abstract onExit(): void;
 	update?(deltaTime: number): void;
 }

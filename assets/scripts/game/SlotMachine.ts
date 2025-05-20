@@ -106,6 +106,13 @@ export class SlotMachine extends Component {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 
+	public resetReels() {
+		for (const reel of this.reels) {
+			reel.resetSymbols(); // you must implement this in the Reel class
+		}
+	}
+
+
 	//Getters and setters
 	set boardManager(value: BoardManager) {
 		this._boardManager = value;

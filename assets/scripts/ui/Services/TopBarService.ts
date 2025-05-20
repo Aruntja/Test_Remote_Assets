@@ -53,7 +53,7 @@ export class TopBarService extends Component {
 
 
 	startTimer() {
-		this.gameTimer.startTimer(7, ()=>{
+		this.gameTimer.startTimer(3, ()=>{
 			this._lobbyService.betClosed()
 			this.gameTimer.reset()
 		})

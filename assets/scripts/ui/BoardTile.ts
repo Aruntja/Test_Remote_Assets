@@ -1,4 +1,5 @@
 import { _decorator, Component, Sprite, SpriteFrame, Color, tween, Vec3 } from 'cc';
+import {BetType, MarqueeSymbolConfig} from "db://assets/scripts/enums/BetOptions";
 const { ccclass, property } = _decorator;
 
 @ccclass('BoardTile')
@@ -17,16 +18,18 @@ export class BoardTile extends Component {
 
     public tileIndex: number = 0;
     private _defaultScale: Vec3 = new Vec3(1, 1, 1);
+    betType: BetType = BetType.BANKER;
 
     onLoad() {
         this._defaultScale = this.node.scale.clone();
         this.icon.color = this.baseColor;
     }
 
-    setIcon(spriteFrame: SpriteFrame) {
-        if (this.icon && spriteFrame) {
-            this.icon.spriteFrame = spriteFrame;
+    setData(data: MarqueeSymbolConfig) {
+        if (this.icon && data.image) {
+            this.icon.spriteFrame = data.image;
         }
+        if(data.betType) this.betType = data.betType
     }
 
     setActiveGlow(active: boolean) {

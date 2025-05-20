@@ -172,6 +172,16 @@ export class Reel extends Component {
 	private _releaseSymbolNode(node: Node) {
 		this._symbolPool.push(node);
 	}
+	public resetSymbols() {
+		// for (const symbol of this.symbolNodes) {
+		// 	// You can reset position, scale, sprite, etc.
+		// 	symbol.setPosition(/* initial position */);
+		// 	// Optional: randomize or reset spriteFrame
+		// 	const randomIndex = Math.floor(Math.random() * this.symbols.length);
+		// 	symbol.getComponent(Sprite).spriteFrame = this.symbols[randomIndex];
+		// }
+	}
+
 
 	public set reelIndex(value: number) {
 		this._reelIndex = value;

@@ -9,6 +9,8 @@ import {GameNetworkHandler} from "db://assets/scripts/network/GameNetworkHandler
 import {EnvConfigProxy} from "db://assets/scripts/env/EnvConfig";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
+import {BetState} from "db://assets/scripts/state/BetState";
+import {GameState} from "db://assets/scripts/state/GameState";
 
 const { ccclass,property } = _decorator;
 
@@ -38,9 +40,9 @@ export class GameManager extends ComponentSingleton<GameManager> {
     }
     private async _performInitialSetup(): Promise<void> {
         try {
+            this._registerStates();
             this._setupEventListeners();
             await EnvConfigProxy.loadConfig()
-            this.machine.register(States.Init, new InitState(this.machine, this));
             this.machine.change(States.Init);
         } catch (error) {
             console.error("Initialization failed:", error);
@@ -48,34 +50,31 @@ export class GameManager extends ComponentSingleton<GameManager> {
         }
     }
 
-    startGameState(){
+    startBetState(){
         if(this.initializationComplete) {
-            this.machine.register(States.Main, new MainState(this.machine, this));
-            this.machine.change(States.Main)
+            this.machine.change(States.Bet)
         }
     }
     update(dt: number) {
         this.machine.update(dt);
     }
     public async changeScene(name: string) {
-        // await this._showLoadingScreen();
-        // console.log(`[GameManager] Changing scene to: ${name}`);
-        await director.loadScene(name);
-        // await new Promise(resolve => setTimeout(resolve, 300));
-        // this._hideLoadingScreen();
+        director.loadScene(name);
     }
     private _setupEventListeners() {
         EventBus.on(GameEvents.ON_BET_COUNTDOWN_ENDED, this.onCountDownTimerEnded.bind(this))
     }
-
-    private async onCountDownTimerEnded(){
-        await this._showLoadingScreen()
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this._hideLoadingScreen();
-        await this.changeScene('GameScene')
+    private _registerStates() {
+        this.machine.register(States.Init, new InitState(this.machine, this));
+        this.machine.register(States.Game, new GameState(this.machine, this));
+        this.machine.register(States.Bet, new BetState(this.machine, this));
     }
 
-    private async _showLoadingScreen() {
+    private async onCountDownTimerEnded(){
+        this.machine.change(States.Game)
+    }
+
+    async _showLoadingScreen() {
 
         if (this.loadingScreenPrefab && !this._loadingScreen) {
             this._loadingScreen = instantiate(this.loadingScreenPrefab);
@@ -90,7 +89,7 @@ export class GameManager extends ComponentSingleton<GameManager> {
         }
     }
 
-    private _hideLoadingScreen() {
+    async _hideLoadingScreen() {
         if (this._loadingScreen) {
             const uiOpacity = this._loadingScreen.getComponent(UIOpacity);
             if (uiOpacity) {
@@ -122,5 +121,6 @@ export class GameManager extends ComponentSingleton<GameManager> {
     get initializationComplete(): boolean {
         return this._initializationComplete;
     }
+
 }
 

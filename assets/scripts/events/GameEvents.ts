@@ -1,6 +1,7 @@
 // events/GameEvents.ts
 export enum GameEvents {
-	GAME_STARTED = 'game-started',
+	START_MAIN_GAME = 'game-started-main',
+	END_MAIN_GAME = 'game-ended-main',
 	SPIN_STARTED = 'spin-started',
 	SPIN_FINISHED = 'spin-finished',
 	SHOW_RESULT = 'show-result',

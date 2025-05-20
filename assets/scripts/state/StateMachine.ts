@@ -26,4 +26,11 @@ export class StateMachine {
 	getCurrent(): BaseState | null {
 		return this.currentState;
 	}
+
+	exit() {
+		if (this.currentState) {
+			this.currentState.onExit?.();
+			this.currentState = null;
+		}
+	}
 }
