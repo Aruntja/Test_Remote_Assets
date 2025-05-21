@@ -8,4 +8,5 @@ export enum GameEvents {
 	ASSETS_LOADED = 'loaded-assets',
 	ON_LOAD_PROGRESS = 'load-progress',
 	ON_BET_COUNTDOWN_ENDED = 'bet-countdown-ended',
+	ON_BET_AMOUNT_UPDATED = 'bet-amount-updated',
 }

@@ -51,6 +51,7 @@ export class LobbyService extends Component {
 		this._totalBetAmount += betAmount
 		this.betButtonsService.showBetAmount(betAmount)
 		this.bottomBarService.updateButtonsInteractivity()
+		EventBus.emit(GameEvents.ON_BET_AMOUNT_UPDATED, this._totalBetAmount)
 	}
 
 	//Getters and Setters
