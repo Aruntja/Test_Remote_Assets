@@ -1,8 +1,9 @@
-import { _decorator, Component, Button, screen,Label, Toggle, Sprite,Node,UIOpacity, Vec3, tween, easing } from 'cc';
+import { _decorator, Component, Button, screen,Label, Toggle, Sprite,Node, Vec3, tween, easing } from 'cc';
 import { LobbyService } from "db://assets/scripts/ui/Services/LobbyService";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
+import {I18nManager} from "db://assets/scripts/managers/I18nManager";
 
 const { ccclass, property } = _decorator;
 
@@ -13,6 +14,9 @@ export class SlotPanelService extends Component {
 
 	@property({ type: Button })
 	fullScreenBtn: Button;
+
+	@property({ type: Button })
+	fullScreenExitBtn: Button;
 
 	@property({ type: Button })
 	soundOnBtn: Button;
@@ -43,15 +47,20 @@ export class SlotPanelService extends Component {
 	private _balanceCompToggleSprite: Sprite;
 
 	private _isMusicOn: boolean = false;
+	private _isFullScreen: boolean = false;
 	private _isSoundOn: boolean = false;
 	private _isMenuOpen: boolean = true;
 	private _isCurrencyMode: boolean = true;
 	private _originalMenuPosition: Vec3 = new Vec3();
+	private _betString: string = null;
 
 	onLoad() {
 
 		if (this.fullScreenBtn) {
 			this.fullScreenBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
+		}
+		if (this.fullScreenExitBtn) {
+			this.fullScreenExitBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
 		}
 		if (this.menuBtn) {
 			this.menuBtn.node.on(Button.EventType.CLICK, this.toggleMenu, this);
@@ -62,30 +71,39 @@ export class SlotPanelService extends Component {
 		}
 		this.soundOnBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
 		this.soundOffBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
-		this.toggleSound()
 
 		this.musicOnBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
 		this.musicOffBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
-		this.toggleMusic()
 
 		this._originalMenuPosition = this.menuGroup.getPosition().clone();
-		this.toggleMenu()
 	}
 	start(){
 		this._setupEventListeners();
+		this._betString = `${I18nManager.instance.t('bet').toUpperCase()}`
+		this.toggleSound()
+		this.toggleMenu()
+		this.toggleMusic()
 	}
 
-	private toggleFullscreen() {
-		if (screen.fullScreen()) {
-			screen.exitFullScreen();
-		} else {
-			screen.requestFullScreen().then(() => {
-				console.log("Entered fullscreen");
-			}).catch((err) => {
-				console.error("Fullscreen failed:", err);
-			});
+	private async toggleFullscreen() {
+		try {
+			if (screen.fullScreen()) {
+				await screen.exitFullScreen();
+				this._isFullScreen = false;
+			} else {
+				await screen.requestFullScreen();
+				this._isFullScreen = true;
+			}
+		} catch (err) {
+			console.error("Fullscreen toggle failed:", err);
+			this._isFullScreen = false;
 		}
+
+		this.fullScreenBtn.node.active = !this._isFullScreen;
+		this.fullScreenExitBtn.node.active = this._isFullScreen;
 	}
+
+
 	private toggleMenu() {
 		this._isMenuOpen = !this._isMenuOpen;
 
@@ -133,10 +151,10 @@ export class SlotPanelService extends Component {
 				amount,
 				0.1,
 				(value: number) => {
-					this.betAmountLabel.string =`BET ${value.toString()}`;
+					this.betAmountLabel.string =`${this._betString} ${value.toString()}`;
 				},
 				() => {
-					this.betAmountLabel.string = `BET ${amount.toString()}`;
+					this.betAmountLabel.string = `${this._betString} ${amount.toString()}`;
 				}
 			);
 		}

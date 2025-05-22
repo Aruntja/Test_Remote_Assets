@@ -12,6 +12,11 @@ export class GameNetworkHandler {
 	) {
 
 	}
+	base64Encode(text: string): string {
+		return btoa(unescape(encodeURIComponent(text)));
+		// return btoa(encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16))));
+	}
+
 
 	public async requestGameInit(): Promise<any> {
 		const url = `${GameConfig.env.baseURL}/api/${GameConfig.gameID}/${this.initUrl}`;
@@ -24,9 +29,13 @@ export class GameNetworkHandler {
 	}
 
 	private _buildGameInitRequest(): any {
+		// return {
+		// 	gameId: GameConfig.gameID,
+		// 	token: GameConfig.playerData.token,
+		// };
 		return {
-			gameId: GameConfig.gameID,
-			token: GameConfig.playerData.token,
+			gameId: this.base64Encode(GameConfig.gameID),
+			token: this.base64Encode(GameConfig.playerData.token),
 		};
 	}
 

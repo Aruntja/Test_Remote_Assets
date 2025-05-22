@@ -29,6 +29,8 @@ export class LobbyService extends Component {
 		this.bottomBarService.lobbyService = this
 		this.startTimer()
 	}
+	start(){
+	}
 	startTimer(){
 		this.topBarService.startTimer()
 		console.log("Start Timer")
