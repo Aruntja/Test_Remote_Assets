@@ -2,6 +2,7 @@
   {"name": [ "localhost", "scene", "gamesv2.microslot.co", "games.microslot.co" ], "config" : {
     "passPhrase" : "microslot1234",
     "baseURL" : "https://service.microslot.co",
+    "baseURLLocal" : "http://localhost:8001",
     "socketURL" : "wss://service.microslot.co",
     "historyURL" : "https://history.microslot.co/game-history",
     "historyAPIURL": "https://service.microslot.co/publicapi/reports/inGame/betHistory",
