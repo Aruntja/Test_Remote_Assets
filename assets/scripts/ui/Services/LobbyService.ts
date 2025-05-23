@@ -37,7 +37,7 @@ export class LobbyService extends Component {
 	}
 
 	betClosed(){
-		this._betTimerCountDownDone = false;
+		this._betTimerCountDownDone = true;
 		EventBus.emit(GameEvents.ON_BET_COUNTDOWN_ENDED)
 	}
 

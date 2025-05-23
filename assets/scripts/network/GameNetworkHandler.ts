@@ -3,6 +3,7 @@ import {ApiService} from "db://assets/scripts/services/ApiService";
 import {GameConfig} from "db://assets/scripts/game/config/GameConfigProxy";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
+import {SocketService} from "db://assets/scripts/services/SocketService";
 
 
 export class GameNetworkHandler {
@@ -14,8 +15,28 @@ export class GameNetworkHandler {
 	public constructor(
 		protected gameManager: GameManager
 	) {
-
+		SocketService.instance.setNetWorkHandler(this);
 	}
+	//Socket Functionalities
+	private async _connectToSocket(): Promise<void> {
+		const socketURL = GameConfig.env.socketURL;
+		if (!socketURL) {
+			console.warn('[GameNetworkHandler] Socket URL is not defined');
+			return;
+		}
+
+		console.log('[GameNetworkHandler] Connecting to socket...');
+		await SocketService.instance.connect(GameConfig.env.socketURL);
+	}
+	public sendSocketMessage(message: any): void {
+		SocketService.instance.send(message);
+	}
+
+	public disconnectSocket(): void {
+		SocketService.instance.disconnect();
+	}
+
+	//API Functionalities
 	base64Encode(text: string): string {
 		return btoa(unescape(encodeURIComponent(text)));
 	}
@@ -26,8 +47,11 @@ export class GameNetworkHandler {
 		const data = await this.handleApiCall(
 			() => ApiService.instance.post(url, this._buildGameInitRequest()),			'init'
 		);
-			this.gameManager.initializationComplete = true;
+		this.gameManager.initializationComplete = true;
 		if (data) {
+			await this._connectToSocket()
+			if(SocketService.instance.connected){
+			}
 		}
 	}
 
@@ -41,7 +65,6 @@ export class GameNetworkHandler {
 		// 	token: this.base64Encode(GameConfig.playerData.token),
 		// };
 	}
-
 
 	public async handleApiCall<T>(apiFunc: () => Promise<T>, p0: string): Promise<T | null> {
 		try {

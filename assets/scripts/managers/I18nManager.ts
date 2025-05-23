@@ -23,7 +23,7 @@ export class I18nManager extends Singleton<I18nManager> {
 
 				this._languages = merged;
 				this._currentLang = lang;
-				console.log(`[I18nManager] Loaded language '${lang}'`, this._languages);
+				console.log(`[I18nManager] Loaded language '${lang}'`);
 				resolve();
 			});
 		});
