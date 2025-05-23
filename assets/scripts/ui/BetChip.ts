@@ -1,4 +1,5 @@
 import { _decorator, Component, Label, Sprite, SpriteFrame, Vec3, tween } from 'cc';
+import {BetChipConfig} from "db://assets/scripts/enums/Miscellaneous";
 const { ccclass, property } = _decorator;
 
 @ccclass('BetChip')
@@ -13,10 +14,11 @@ export class BetChip extends Component {
 	private _value: number = 0;
 	private _selected = false;
 
-	public setValue(value: number) {
-		this._value = value;
+	public setChipData(config: BetChipConfig) {
+		this.setSprite(config.image)
+		this._value = config.value;
 		if (this.valueLabel) {
-			this.valueLabel.string = value.toString();
+			this.valueLabel.string = config.value.toString();
 		}
 	}
 

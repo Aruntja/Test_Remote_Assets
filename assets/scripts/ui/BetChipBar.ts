@@ -1,10 +1,14 @@
-import { _decorator, Component, Node, Prefab, Button, instantiate, v3, tween,ScrollView, UITransform } from 'cc';
+import { _decorator, Component, Node, Prefab, Button,SpriteFrame, instantiate, v3, tween,ScrollView, UITransform } from 'cc';
 import {BetChip} from "db://assets/scripts/ui/BetChip";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
+import {BetChipConfig} from "db://assets/scripts/enums/Miscellaneous";
 const { ccclass, property } = _decorator;
 
 @ccclass('BetChipBar')
 export class BetChipBar extends Component {
+
+	@property({type: [BetChipConfig]})
+	chipTypes: BetChipConfig[] = [];
 
 	@property(Prefab)
 	chipPrefab: Prefab = null;
@@ -43,13 +47,18 @@ export class BetChipBar extends Component {
 		if(this.btnRight) this.btnRight.node.on('click', () => this.onClickRight());
 	}
 
-	initializeChips() {
+	initializeChips(){
 		this._chipValues = [10, 25, 50, 100, 250, 500];
 
 		this._chipValues.forEach((value, index) => {
+			const chipConfig = this.chipTypes.find(config => config.value === value);
+			if(!chipConfig){
+				console.warn(`Chip config not found for value: ${value}`);
+				return;
+			}
 			const chip = instantiate(this.chipPrefab);
 			const betChip : BetChip = chip.getComponent(BetChip);
-			betChip.setValue(value);
+			betChip.setChipData(chipConfig);
 			chip.on(Node.EventType.TOUCH_END, () => this.selectChip(index));
 
 			chip.setPosition(index * this.chipSpacing, 0);
@@ -73,7 +82,7 @@ export class BetChipBar extends Component {
 		// });
 	}
 
-	private animateToPosition(index: number) {
+	private animateToPosition(index: number){
 		this.isAnimating = true;
 		let targetX = -index * this.chipSpacing + - this.scrollView.node.getComponent(UITransform).width / 2;
 		targetX += this.chipSize * 0.25

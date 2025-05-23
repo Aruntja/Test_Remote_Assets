@@ -383,7 +383,9 @@
     "__prefab": {
       "__id__": 15
     },
-    "sprite": null,
+    "sprite": {
+      "__id__": 10
+    },
     "valueLabel": {
       "__id__": 5
     },
