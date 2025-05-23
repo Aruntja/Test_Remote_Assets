@@ -1,10 +1,11 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, Label } from 'cc';
 import {TopBarService} from "db://assets/scripts/ui/Services/TopBarService";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
 import {BottomBarService} from "db://assets/scripts/ui/Services/BottomBarService";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
+import {I18nManager} from "db://assets/scripts/managers/I18nManager";
 
 
 const {ccclass, property} = _decorator;
@@ -34,6 +35,7 @@ export class LobbyService extends Component {
 		this.startTimer()
 	}
 	start(){
+		this.closedBetNode.getComponent(Label).string = I18nManager.instance.t('betsClosed')
 	}
 	startTimer(){
 		this.topBarService.startTimer()

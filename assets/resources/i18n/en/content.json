@@ -1,5 +1,6 @@
 {
   "error": "Error",
   "bet": "Bet",
-  "errorCode": "Error Code"
+  "errorCode": "Error Code",
+  "betsClosed": "Bets Closed"
 }
