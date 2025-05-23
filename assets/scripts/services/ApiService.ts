@@ -48,30 +48,37 @@ export class ApiService extends Singleton<ApiService> {
 		for (let attempt = 0; attempt <= retryCount; attempt++) {
 			try {
 				const response = await fetch(url, options);
-				const data = await response.json();
+				const contentType = response.headers.get("Content-Type") || "";
+
+				let responseData: any;
+				if (contentType.includes("application/json")) {
+					responseData = await response.json();
+				} else {
+					responseData = await response.text(); // fallback for non-JSON
+				}
 
 				if (!response.ok) {
-					throw new Error(data.message || `HTTP Error ${response.status}`);
+					const error = new Error(response.statusText || 'Request failed');
+					(error as any).status = response.status;
+					(error as any).body = responseData;
+					throw error;
 				}
 
 				if (method === 'GET' && this.enableCaching) {
-					this.cache.set(url, data);
+					this.cache.set(url, responseData);
 				}
 
-				EventBus.emit("HIDE_LOADER");
-				return data;
-			} catch (error) {
+				// EventBus.emit("HIDE_LOADER");
+				return responseData;
+			} catch (error: any) {
 				if (attempt === retryCount) {
-					console.error(`[ApiService] ${method} ${endpoint} failed after ${retryCount + 1} attempts.`, error);
-					EventBus.emit("API_ERROR", { endpoint, error });
-					EventBus.emit("HIDE_LOADER");
 					throw error;
 				}
 				await this.delay(500);
 			}
 		}
 
-		EventBus.emit("HIDE_LOADER");
+		// EventBus.emit("HIDE_LOADER");
 		throw new Error("Unexpected request failure");
 	}
 

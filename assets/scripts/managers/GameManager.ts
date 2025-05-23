@@ -10,6 +10,8 @@ import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {BetState} from "db://assets/scripts/state/BetState";
 import {GameState} from "db://assets/scripts/state/GameState";
+import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
+import {ErrorPopUpService} from "db://assets/scripts/ui/Services/ErrorPopUpService";
 
 const { ccclass,property } = _decorator;
 
@@ -22,11 +24,16 @@ export class GameManager extends ComponentSingleton<GameManager> {
     private machine = new StateMachine();
     private _assetLoader = new AssetLoader();
     private _gameNetworkHandler = new GameNetworkHandler(this);
+    private _errorPopupService: ErrorPopUpService = null;
 
     private _loadingScreen: Node | null = null;
+    private _errorPopup: Node | null = null;
 
     @property ({type: Prefab})
     loadingScreenPrefab: Prefab | null = null;
+
+    @property ({type: Prefab})
+    ErrorPopUpPrefab: Prefab | null = null;
 
     onLoad() {
         super.onLoad();
@@ -52,6 +59,8 @@ export class GameManager extends ComponentSingleton<GameManager> {
     startBetState(){
         if(this.initializationComplete) {
             this.machine.change(States.Bet)
+        } else if(this._gameNetworkHandler.initError) {
+            this.__showErrorPopUp(this._gameNetworkHandler.errorDataMap['init'])
         }
     }
     update(dt: number) {
@@ -61,7 +70,9 @@ export class GameManager extends ComponentSingleton<GameManager> {
         director.loadScene(name);
     }
     private _setupEventListeners() {
-        EventBus.on(GameEvents.ON_BET_COUNTDOWN_ENDED, this.onCountDownTimerEnded.bind(this))
+        EventBus.on(GameEvents.ON_BET_COUNTDOWN_ENDED, this.onCountDownTimerEnded, this)
+        EventBus.on(GameEvents.ON_BET_COUNTDOWN_ENDED, this.onCountDownTimerEnded, this)
+        EventBus.on(GameEvents.ON_API_ERROR, this.__showErrorPopUp, this)
     }
     private _registerStates() {
         this.machine.register(States.Init, new InitState(this.machine, this));
@@ -74,36 +85,33 @@ export class GameManager extends ComponentSingleton<GameManager> {
     }
 
     async _showLoadingScreen() {
-
-        if (this.loadingScreenPrefab && !this._loadingScreen) {
+        if (!this._loadingScreen && this.loadingScreenPrefab) {
             this._loadingScreen = instantiate(this.loadingScreenPrefab);
-            director.getScene().addChild(this._loadingScreen);
-            director.addPersistRootNode(this._loadingScreen);
-        }else{
-            const uiOpacity = this._loadingScreen.getComponent(UIOpacity);
-            if (uiOpacity) {
-                uiOpacity.opacity = 0;
-                tween(uiOpacity).to(0.3, { opacity: 255 }).start();
+            const scene = director.getScene();
+            if (scene && this._loadingScreen) {
+                scene.addChild(this._loadingScreen);
+                director.addPersistRootNode(this._loadingScreen);
+                console.log('Loading screen added to scene');
             }
         }
+        UIUtil._fadeIn(this._loadingScreen, 0.3)
     }
 
     async _hideLoadingScreen() {
-        if (this._loadingScreen) {
-            const uiOpacity = this._loadingScreen.getComponent(UIOpacity);
-            if (uiOpacity) {
-                tween(uiOpacity)
-                .to(0.3, { opacity: 0 })
-                .call(() => {
-                    this._loadingScreen?.destroy();
-                    this._loadingScreen = null;
-                })
-                .start();
-            } else {
-                this._loadingScreen.destroy();
-                this._loadingScreen = null;
-            }
+        if (!this._loadingScreen) return;
+        UIUtil._fadeOut(this._loadingScreen, 0.3);
+    }
+
+
+    private async __showErrorPopUp(error: any) {
+        if (!this._errorPopup && this.ErrorPopUpPrefab) {
+            this._errorPopup = instantiate(this.ErrorPopUpPrefab);
+            director.getScene().addChild(this._errorPopup);
+            director.addPersistRootNode(this._errorPopup);
+            if(!this._errorPopupService) this._errorPopupService = this._errorPopup.getComponent(ErrorPopUpService);
         }
+        if(this._errorPopup) UIUtil._fadeIn(this._errorPopup, 0.3)
+        if(this._errorPopupService) this._errorPopupService.showPopUp(error)
     }
 
     //Getters & setters

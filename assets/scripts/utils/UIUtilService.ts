@@ -5,6 +5,8 @@ import {NumberTweenTask} from "db://assets/types/NumberTweenTask";
 export class UIUtilService{
 
 	private _originalScales = new WeakMap<Node, Vec3>();
+	private _numberTweenQueues = new WeakMap<any, NumberTweenTask[]>();
+	private _isTweeningMap = new WeakMap<any, boolean>();
 
 	public delay(ms: number): Promise<void> {
 		return new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,21 +29,38 @@ export class UIUtilService{
 		.start();
 	}
 
-	public fadeIn(node: Node) {
+	public _fadeIn(node: Node, duration: number = 0.3, callback?: () => void) {
 		const opacity = node.getComponent(UIOpacity);
-		if (!opacity) return;
-		tween(opacity).to(0.3, { opacity: 255 }).start();
+		node.active = true;
+
+		if (opacity) {
+			opacity.opacity = 0;
+			tween(opacity)
+			.to(duration, { opacity: 255 })
+			.call(() => {
+				callback?.();
+			})
+			.start();
+		} else {
+			callback?.();
+		}
 	}
 
-	public fadeOut(node: Node) {
+	public _fadeOut(node: Node, duration: number = 0.3, callback?: () => void) {
 		const opacity = node.getComponent(UIOpacity);
-		if (!opacity) return;
-		tween(opacity).to(0.3, { opacity: 0 }).start();
+		if (opacity) {
+			tween(opacity)
+			.to(duration, { opacity: 0 })
+			.call(() => {
+				node.active = false;
+				callback?.();
+			})
+			.start();
+		} else {
+			node.active = false;
+			callback?.();
+		}
 	}
-
-
-	private _numberTweenQueues = new WeakMap<any, NumberTweenTask[]>();
-	private _isTweeningMap = new WeakMap<any, boolean>();
 
 	public queueTweenNumber(
 		caller: any, // can be a Label, Node, or component

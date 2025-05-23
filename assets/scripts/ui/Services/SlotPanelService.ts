@@ -54,6 +54,8 @@ export class SlotPanelService extends Component {
 	private _originalMenuPosition: Vec3 = new Vec3();
 	private _betString: string = null;
 
+	private _onFullscreenChangeBound: () => void;
+
 	onLoad() {
 
 		if (this.fullScreenBtn) {
@@ -76,6 +78,7 @@ export class SlotPanelService extends Component {
 		this.musicOffBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
 
 		this._originalMenuPosition = this.menuGroup.getPosition().clone();
+		this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
 	}
 	start(){
 		this._setupEventListeners();
@@ -89,18 +92,18 @@ export class SlotPanelService extends Component {
 		try {
 			if (screen.fullScreen()) {
 				await screen.exitFullScreen();
-				this._isFullScreen = false;
+				// this._isFullScreen = false;
 			} else {
 				await screen.requestFullScreen();
-				this._isFullScreen = true;
+				// this._isFullScreen = true;
 			}
 		} catch (err) {
 			console.error("Fullscreen toggle failed:", err);
-			this._isFullScreen = false;
+			// this._isFullScreen = false;
 		}
 
-		this.fullScreenBtn.node.active = !this._isFullScreen;
-		this.fullScreenExitBtn.node.active = this._isFullScreen;
+		// this.fullScreenBtn.node.active = !this._isFullScreen;
+		// this.fullScreenExitBtn.node.active = this._isFullScreen;
 	}
 
 
@@ -160,26 +163,42 @@ export class SlotPanelService extends Component {
 		}
 
 	}
-	private _setupEventListeners() {
-		EventBus.on(GameEvents.ON_BET_AMOUNT_UPDATED, this.updateBetAmount, this)
+	private _onFullscreenChange() {
+		this._isFullScreen = !!document.fullscreenElement;
+		this.fullScreenBtn.node.active = !this._isFullScreen;
+		this.fullScreenExitBtn.node.active = this._isFullScreen;
 	}
 
-	// Remove event listener when destroyed
-	onDestroy() {
-		if (this.fullScreenBtn) {
+	private _setupEventListeners() {
+		EventBus.on(GameEvents.ON_BET_AMOUNT_UPDATED, this.updateBetAmount, this)
+		document.addEventListener('fullscreenchange', this._onFullscreenChangeBound);
+	}
+
+	onDisable(){
+		if (this.fullScreenBtn?.node) {
 			this.fullScreenBtn.node.off(Button.EventType.CLICK, this.toggleFullscreen, this);
 		}
-		if (this.balanceComp) {
+		if (this.balanceComp?.node) {
 			this.balanceComp.node.off(Toggle.EventType.TOGGLE, this.toggleBalance, this);
 		}
-		if (this.menuBtn) {
+		if (this.menuBtn?.node) {
 			this.menuBtn.node.off(Button.EventType.CLICK, this.toggleMenu, this);
 		}
-		this.soundOnBtn?.node.off(Button.EventType.CLICK, this.toggleSound, this);
-		this.soundOffBtn?.node.off(Button.EventType.CLICK, this.toggleSound, this);
-		this.musicOnBtn?.node.off(Button.EventType.CLICK, this.toggleMusic, this);
-		this.musicOffBtn?.node.off(Button.EventType.CLICK, this.toggleMusic, this);
-		EventBus.off(GameEvents.ON_BET_AMOUNT_UPDATED, this.updateBetAmount, this)
+		if (this.soundOnBtn?.node) {
+			this.soundOnBtn.node.off(Button.EventType.CLICK, this.toggleSound, this);
+		}
+		if (this.soundOffBtn?.node) {
+			this.soundOffBtn.node.off(Button.EventType.CLICK, this.toggleSound, this);
+		}
+		if (this.musicOnBtn?.node) {
+			this.musicOnBtn.node.off(Button.EventType.CLICK, this.toggleMusic, this);
+		}
+		if (this.musicOffBtn?.node) {
+			this.musicOffBtn.node.off(Button.EventType.CLICK, this.toggleMusic, this);
+		}
+		EventBus.off(GameEvents.ON_BET_AMOUNT_UPDATED, this.updateBetAmount, this);
+		document.removeEventListener('fullscreenchange', this._onFullscreenChangeBound);
 	}
+
 	// Getters and Setters
 }

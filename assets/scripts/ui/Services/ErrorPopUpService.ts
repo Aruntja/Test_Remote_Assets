@@ -1,11 +1,11 @@
 import { _decorator, Component, SpriteFrame, Node, Label, Button } from 'cc';
-import {ComponentSingleton} from "db://assets/scripts/core/ComponentSingleton";
+import {I18nManager} from "db://assets/scripts/managers/I18nManager";
 
 
 const {ccclass, property} = _decorator;
 
 @ccclass('ErrorPopUpService')
-export class ErrorPopUpService extends ComponentSingleton<ErrorPopUpService> {
+export class ErrorPopUpService extends Component {
 
 	@property(Label)
 	headerLbl: Label = null;
@@ -24,12 +24,19 @@ export class ErrorPopUpService extends ComponentSingleton<ErrorPopUpService> {
 	@property(Button)
 	cancelBtn: Button = null;
 
+	private errorCodeTxt: string = null;
+	private headerTxt: string = null;
 
 	onLoad() {
-
+		this.headerTxt = I18nManager.instance.t('error').toUpperCase();
+		this.errorCodeTxt = I18nManager.instance.t('errorCode');
 	}
 	start() {
-
+		this.headerLbl.string = this.headerTxt
+	}
+	showPopUp(error: any){
+		console.log(error)
+		this.errorLbl.string = `${this.errorCodeTxt}: ${error.status}`
 	}
 
 	//Getters and  Setters
