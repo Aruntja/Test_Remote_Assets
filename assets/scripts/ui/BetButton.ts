@@ -1,4 +1,4 @@
-import { _decorator, Component, Sprite, Label, Enum, tween } from 'cc';
+import { _decorator, Component, Sprite, Label, Enum, tween, Button } from 'cc';
 import {BetType, BetCharacters} from "db://assets/scripts/enums/BetOptions";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
 
@@ -29,6 +29,8 @@ export class BetButton extends Component {
 	@property({ type: Enum(BetCharacters) })
 	betCharacter: BetCharacters = BetCharacters.WUKONG;
 
+	_button: Button;
+
 	private _buttonsService: BetButtonsService = null;
 	private iconOriginalScale: any;
 	private _selected: boolean;
@@ -44,6 +46,9 @@ export class BetButton extends Component {
 	onLoad() {
 		this.updateBackground();
 		this.updateIcon();
+	}
+	start(){
+		this._button = this.getComponent(Button);
 	}
 
 	updateBackground() {

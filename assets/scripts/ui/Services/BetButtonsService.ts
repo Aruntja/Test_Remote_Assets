@@ -46,13 +46,18 @@ export class BetButtonsService extends Component {
 		const selectedButton = this._buttons.find(button => button.selected);
 		selectedButton.showBetAmount(betAmount)
 	}
-	public get selectedType(): BetType {
-		return this._selectedType;
+	public setButtonsInteractable(value: boolean): void {
+		this._buttons.forEach(betButton => {
+			betButton._button.interactable = value;
+		});
 	}
 
 	//Getters and  Setters
 	set lobbyService(value: LobbyService) {
 		this._lobbyService = value;
+	}
+	public get selectedType(): BetType {
+		return this._selectedType;
 	}
 
 }

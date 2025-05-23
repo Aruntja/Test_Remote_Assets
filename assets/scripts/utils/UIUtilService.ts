@@ -18,14 +18,23 @@ export class UIUtilService{
 		const index = Math.floor(Math.random() * array.length);
 		return array[index];
 	}
-	public zoomInOut(target: Node, zoomScale = 1.2, duration = 0.1) {
+	public zoomInOut(target: Node, zoomScale = 1.2, duration = 0.1, completeCallback?: () => void) {
 		if (!target) return;
 
 		const originalScale = target.getScale();
 
 		tween(target)
-		.to(duration, { scale: new Vec3(originalScale.x * zoomScale, originalScale.y * zoomScale, originalScale.z * zoomScale) }, { easing: 'quadOut' })
-		.to(duration, { scale: originalScale }, { easing: easing.quadOut })
+		.to(duration, {
+			scale: new Vec3(
+				originalScale.x * zoomScale,
+				originalScale.y * zoomScale,
+				originalScale.z * zoomScale
+			)
+		}, { easing: 'quadOut' })
+		.to(duration, { scale: originalScale }, { easing: 'quadOut' })
+		.call(() => {
+			if (completeCallback) completeCallback();
+		})
 		.start();
 	}
 
