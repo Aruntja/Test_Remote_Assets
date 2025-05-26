@@ -2,5 +2,10 @@
   "error": "Error",
   "bet": "Bet",
   "errorCode": "Error Code",
-  "betsClosed": "Bets Closed"
+  "betsClosed": "Bets Closed",
+  "repeat": "Repeat",
+  "remove": "Remove",
+  "clear": "Clear",
+  "autoBet": "AutoBet",
+  "confirm": "Confirm"
 }

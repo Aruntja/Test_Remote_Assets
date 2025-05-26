@@ -48,10 +48,18 @@ export class BetButtonsService extends Component {
 	}
 	public setButtonsInteractable(value: boolean): void {
 		this._buttons.forEach(betButton => {
-			betButton._button.interactable = value;
+			betButton.setInteractive(value)
 		});
 	}
 
+	clearBets() {
+		this._buttons.forEach(betButton => {
+			if(betButton.betAmount > 0){
+				betButton.showBetAmount(-betButton.betAmount);
+			}
+		});
+		this.setButtonsInteractable(true);
+	}
 	//Getters and  Setters
 	set lobbyService(value: LobbyService) {
 		this._lobbyService = value;

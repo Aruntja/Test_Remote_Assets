@@ -21,6 +21,7 @@ export class UIUtilService{
 	public zoomInOut(target: Node, zoomScale = 1.2, duration = 0.1, completeCallback?: () => void) {
 		if (!target) return;
 
+		target.active = true;
 		const originalScale = target.getScale();
 
 		tween(target)
@@ -37,6 +38,29 @@ export class UIUtilService{
 		})
 		.start();
 	}
+	public zoomOutIn(target: Node, zoomScale = 1.2, duration = 0.1, completeCallback?: () => void) {
+		if (!target) return;
+
+		target.active = true;
+		const originalScale = target.getScale();
+
+		tween(target)
+		.to(duration, {
+			scale: new Vec3(
+				originalScale.x / zoomScale,
+				originalScale.y / zoomScale,
+				originalScale.z / zoomScale
+			)
+		}, { easing: 'quadOut' })
+		.to(duration, { scale: originalScale }, { easing: 'quadOut' })
+		.call(() => {
+			target.active = false; // hide after zoom animation
+			if (completeCallback) completeCallback();
+		})
+		.start();
+	}
+
+
 
 	public _fadeIn(node: Node, duration: number = 0.3, callback?: () => void) {
 		const opacity = node.getComponent(UIOpacity);

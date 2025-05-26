@@ -4,10 +4,12 @@ import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsServi
 
 
 
+
 const { ccclass, property } = _decorator;
 
 @ccclass('BetButton')
 export class BetButton extends Component {
+
 
 
 	@property(Sprite)
@@ -73,6 +75,7 @@ export class BetButton extends Component {
 		this._tryStartNextTween();
 	}
 
+
 	animateClick() {
 		if (!this.icon) return;
 		const zoomedScale = this.iconOriginalScale.clone().multiplyScalar(1.2); // 20% larger
@@ -104,6 +107,10 @@ export class BetButton extends Component {
 		})
 		.start();
 	}
+	setInteractive(flag: boolean) {
+		this._button.interactable = flag;
+		this.background.grayscale = !flag && this._totalBetAmount <= 0;
+	}
 
 	//Getters and Setters
 	set buttonsService(value: BetButtonsService) {
@@ -116,10 +123,8 @@ export class BetButton extends Component {
 	set selected(value: boolean) {
 		this._selected = value;
 	}
-
-
-
-
-
+	get betAmount(): number {
+		return this._displayedAmount;
+	}
 
 }
