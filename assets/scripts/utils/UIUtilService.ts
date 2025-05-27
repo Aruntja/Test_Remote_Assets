@@ -156,6 +156,27 @@ export class UIUtilService{
 		this._isTweeningMap.set(caller, false);
 	}
 
+	public formatCurrency(balance: number,options?: { currencyCode?: string;	locale?: string; decimalPlaces?: number}): string {
+		const locale = options?.locale ?? 'en-US';
+		const decimalPlaces = options?.decimalPlaces ?? 2;
+
+		if (options?.currencyCode) {
+			return new Intl.NumberFormat(locale, {
+				style: 'currency',
+				currency: options.currencyCode,
+				minimumFractionDigits: decimalPlaces,
+				maximumFractionDigits: decimalPlaces,
+			}).format(balance);
+		} else {
+			return new Intl.NumberFormat(locale, {
+				minimumFractionDigits: decimalPlaces,
+				maximumFractionDigits: decimalPlaces,
+			}).format(balance);
+		}
+	}
+
+
+
 }
 export const UIUtil = new UIUtilService();
 

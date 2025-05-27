@@ -5,6 +5,7 @@ import {GameManager} from "db://assets/scripts/managers/GameManager";
 import {StateMachine} from "db://assets/scripts/state/StateMachine";
 import {I18nManager} from "db://assets/scripts/managers/I18nManager";
 import {GameConfig} from "db://assets/scripts/game/config/GameConfigProxy";
+import {GameDataService} from "db://assets/scripts/services/GameDataService";
 
 
 
@@ -19,7 +20,7 @@ export class InitAssetsState extends BaseState {
 
 	async onEnterImpl(): Promise<void> {
 		this.setupEventListeners()
-		await I18nManager.instance.loadLanguage(GameConfig.language)
+		await I18nManager.instance.loadLanguage(GameDataService.instance.playerInfo.language.toLowerCase());
 		if(GameManager.instance){
 			GameManager.instance.assetLoader.initAssets()
 		}

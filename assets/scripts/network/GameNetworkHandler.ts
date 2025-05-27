@@ -20,7 +20,7 @@ export class GameNetworkHandler {
 	}
 	//Socket Functionalities
 	private async _connectToSocket(): Promise<void> {
-		const socketURL = GameConfig.env.socketURL;
+		const socketURL = `wss://servicetmp.microslot.co/${GameConfig.gameID}`;
 		console.log(socketURL)
 		if (!socketURL) {
 			console.warn('[GameNetworkHandler] Socket URL is not defined');
@@ -28,7 +28,7 @@ export class GameNetworkHandler {
 		}
 
 		console.log('[GameNetworkHandler] Connecting to socket...');
-		await SocketService.instance.connect(GameConfig.env.socketURL);
+		await SocketService.instance.connect(socketURL);
 	}
 	public sendSocketMessage(message: any): void {
 		SocketService.instance.send(message);
@@ -42,7 +42,6 @@ export class GameNetworkHandler {
 	base64Encode(text: string): string {
 		return btoa(unescape(encodeURIComponent(text)));
 	}
-
 
 	public async requestGameInit(): Promise<any> {
 		const url = `${GameConfig.env.baseURL}/api/${GameConfig.gameID}/${this.initUrl}`;
@@ -59,10 +58,6 @@ export class GameNetworkHandler {
 	}
 
 	private _buildGameInitRequest(): any {
-		// return {
-		// 	gameId: GameConfig.gameID,
-		// 	token: GameConfig.playerData.token,
-		// };
 		return {
 			gameId: this.base64Encode(GameConfig.gameID),
 			token: this.base64Encode(GameConfig.playerData.token),

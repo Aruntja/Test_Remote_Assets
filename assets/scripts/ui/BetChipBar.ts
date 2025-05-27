@@ -51,10 +51,12 @@ export class BetChipBar extends Component {
 	initializeChips(){
 		this._chipValues = GameDataService.instance.initData?.playerInfo?.possibleBets || [];
 
+		let missingValues = [];
+
 		this._chipValues.forEach((value, index) => {
 			const chipConfig = this.chipTypes.find(config => config.value === value);
 			if(!chipConfig){
-				console.warn(`Chip config not found for value: ${value}`);
+				missingValues.push(value);
 				return;
 			}
 			const chip = instantiate(this.chipPrefab);
@@ -66,10 +68,16 @@ export class BetChipBar extends Component {
 			this.content.addChild(chip);
 			this.chips.push(chip);
 		});
-		this.chipSize = this.chips[0].getComponent(UITransform).width
+
+		if(missingValues.length > 0){
+			console.warn(`Chip config not found for values: ${missingValues.join(', ')}`);
+		}
+
+		this.chipSize = this.chips[0].getComponent(UITransform).width;
 		this.content.getComponent(UITransform).width = this._chipValues.length * this.chipSpacing;
 		this.selectChip(0);
 	}
+
 
 	selectChip(index: number) {
 		if (this.isAnimating || index < 0 || index >= this.chips.length) return;

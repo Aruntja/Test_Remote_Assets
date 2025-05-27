@@ -35,10 +35,6 @@ class GameConfigProxy {
 				}
 			}
 		}
-
-		if(this.playerData.language) {
-			this.language = this.playerData.language
-		}
 	}
 }
 export const GameConfig = new GameConfigProxy();

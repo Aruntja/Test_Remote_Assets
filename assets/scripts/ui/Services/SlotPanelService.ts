@@ -4,6 +4,7 @@ import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
 import {I18nManager} from "db://assets/scripts/managers/I18nManager";
+import {GameDataService} from "db://assets/scripts/services/GameDataService";
 
 const { ccclass, property } = _decorator;
 
@@ -57,53 +58,44 @@ export class SlotPanelService extends Component {
 	private _onFullscreenChangeBound: () => void;
 
 	onLoad() {
-
-		if (this.fullScreenBtn) {
-			this.fullScreenBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
-		}
-		if (this.fullScreenExitBtn) {
-			this.fullScreenExitBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
-		}
-		if (this.menuBtn) {
-			this.menuBtn.node.on(Button.EventType.CLICK, this.toggleMenu, this);
-		}
-		if (this.balanceComp) {
-			this._balanceCompToggleSprite = this.balanceComp.node.getComponent(Sprite);
-			this.balanceComp.node.on(Toggle.EventType.TOGGLE, this.toggleBalance, this);
-		}
-		this.soundOnBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
-		this.soundOffBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
-
-		this.musicOnBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
-		this.musicOffBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
-
+		this._initializeView();
+		this._setupEventListeners();
 		this._originalMenuPosition = this.menuGroup.getPosition().clone();
-		this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
 	}
 	start(){
-		this._setupEventListeners();
 		this._betString = `${I18nManager.instance.t('bet').toUpperCase()}`
 		this.toggleSound()
 		this.toggleMenu()
 		this.toggleMusic()
 	}
 
+	private _initializeView() {
+		const playerData = GameDataService.instance.initData?.playerInfo;
+		this.updateBalance()
+
+	}
+
 	private async toggleFullscreen() {
 		try {
 			if (screen.fullScreen()) {
 				await screen.exitFullScreen();
-				// this._isFullScreen = false;
 			} else {
 				await screen.requestFullScreen();
-				// this._isFullScreen = true;
 			}
 		} catch (err) {
 			console.error("Fullscreen toggle failed:", err);
-			// this._isFullScreen = false;
 		}
+	}
 
-		// this.fullScreenBtn.node.active = !this._isFullScreen;
-		// this.fullScreenExitBtn.node.active = this._isFullScreen;
+	public updateBalance() {
+		const balance = GameDataService.instance.initData?.playerInfo?.balance;
+		UIUtil.queueTweenNumber( this.playerBalanceLabel, balance,0.4,	(value: number) => {
+			this.playerBalanceLabel.string = value.toString();
+		},
+		() => {
+			this.playerBalanceLabel.string = UIUtil.formatCurrency(balance)
+		}
+		);
 	}
 
 
@@ -172,6 +164,25 @@ export class SlotPanelService extends Component {
 	private _setupEventListeners() {
 		EventBus.on(GameEvents.ON_BET_AMOUNT_UPDATED, this.updateBetAmount, this)
 		document.addEventListener('fullscreenchange', this._onFullscreenChangeBound);
+		if (this.fullScreenBtn) {
+			this.fullScreenBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
+		}
+		if (this.fullScreenExitBtn) {
+			this.fullScreenExitBtn.node.on(Button.EventType.CLICK, this.toggleFullscreen, this);
+		}
+		if (this.menuBtn) {
+			this.menuBtn.node.on(Button.EventType.CLICK, this.toggleMenu, this);
+		}
+		if (this.balanceComp) {
+			this._balanceCompToggleSprite = this.balanceComp.node.getComponent(Sprite);
+			this.balanceComp.node.on(Toggle.EventType.TOGGLE, this.toggleBalance, this);
+		}
+		this.soundOnBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
+		this.soundOffBtn?.node.on(Button.EventType.CLICK, this.toggleSound, this);
+
+		this.musicOnBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
+		this.musicOffBtn?.node.on(Button.EventType.CLICK, this.toggleMusic, this);
+		this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
 	}
 
 	onDisable(){

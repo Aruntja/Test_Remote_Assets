@@ -10,4 +10,7 @@ export class GameDataService extends Singleton<GameDataService>{
 	get initData(): any {
 		return this._initData;
 	}
+	get playerInfo(): any {
+		return this._initData.playerInfo;
+	}
 }

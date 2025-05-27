@@ -207,54 +207,6 @@ export class MarqueeRing extends Component {
 		this._glowIndex = targetIndex;
 		this._boardManager.marqueeRingSpinComplete()
 	}
-
-
-	// private getShortestDirection(current: number, target: number, total: number): boolean {
-	// 	if (current >= 0 && current <= 8 && target >= 13) return true;
-	// 	if (current >= 22 && target <= 8) return true;
-	//
-	// 	const forwardDist = (target - current + total) % total;
-	// 	const backwardDist = (current - target + total) % total;
-	// 	console.log(`Direction Check: Current=${current}, Target=${target}, Forward=${forwardDist}, Backward=${backwardDist}, Clockwise=${forwardDist <= backwardDist}`);
-	// 	return forwardDist <= backwardDist;
-	// }
-
-	// private async animateSelection(
-	// 	startIndex: number,
-	// 	targetIndex: number,
-	// 	totalSteps: number,
-	// 	totalTiles: number,
-	// 	clockwise: boolean
-	// ) {
-	// 	let current = startIndex;
-	//
-	// 	const anticipationSteps = 2 * totalTiles;
-	// 	for (let step = 0; step < anticipationSteps; step++) {
-	// 		current = (current + 1) % totalTiles;
-	// 		this.updateGlow(current);
-	// 		await this._delay(0.05);
-	// 	}
-	//
-	// 	const neededSteps = this.calculateSteps(current, targetIndex, totalTiles, clockwise);
-	// 	for (let step = 0; step < neededSteps; step++) {
-	// 		current = clockwise
-	// 			? (current + 1) % totalTiles
-	// 			: (current - 1 + totalTiles) % totalTiles;
-	//
-	// 		const progress = step / neededSteps;
-	// 		const speed = 0.1 + (0.4 * Math.pow(progress, 3));
-	//
-	// 		this.updateGlow(current);
-	// 		await this._delay(speed);
-	// 	}
-	// }
-
-	// private calculateSteps(current: number, target: number, total: number, clockwise: boolean): number {
-	// 	return clockwise
-	// 		? (target - current + total) % total
-	// 		: (current - target + total) % total;
-	// }
-
 	private updateGlow(index: number) {
 		this.resetGlow();
 		const tile = this._tiles[index];

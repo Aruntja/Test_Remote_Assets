@@ -79,7 +79,8 @@ export class BoardManager extends Component {
 
     async onReelSpinComplete(){
         this.isSpinning = false;
-        await this.marqueeRing.showWin(10)
+        const targetIndex =  Math.floor(Math.random() * this.marqueeRing.tileCount);
+        await this.marqueeRing.showWin(targetIndex)
     }
 
     async marqueeRingSpinComplete() {

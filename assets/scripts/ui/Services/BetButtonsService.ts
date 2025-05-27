@@ -118,8 +118,8 @@ export class BetButtonsService extends Component {
 			button.node.off('click');
 		});
 		this._selectedType = null;
-		this.setButtonsInteractable(false);
-		this.clearBets();
-		this._lobbyService = null;
+		// this.setButtonsInteractable(false);
+		// this.clearBets();
+		// this._lobbyService = null;
 	}
 }
