@@ -51,9 +51,9 @@ export class GameNetworkHandler {
 		if (data) {
 			this.gameManager.initializationComplete = true;
 			GameDataService.instance.setInitData(data);
-			// await this._connectToSocket()
-			if(SocketService.instance.connected){
-			}
+			await this._connectToSocket()
+			// if(SocketService.instance.connected){
+			// }
 		}
 	}
 
