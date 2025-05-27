@@ -10,16 +10,16 @@ export class BottomBarService extends Component {
 
 	private _lobbyService: LobbyService = null;
 
-	@property (BetChipBar)
+	@property(BetChipBar)
 	betChipBar: BetChipBar = null
 
-	@property (Button)
+	@property(Button)
 	repeatOrConfirmButton?: Button;
-	@property (Button)
+	@property(Button)
 	removeButton?: Button;
-	@property (Button)
+	@property(Button)
 	clearButton?: Button;
-	@property (Button)
+	@property(Button)
 	autoBetButton?: Button;
 
 	private repeatLabel?: Label;
@@ -29,11 +29,15 @@ export class BottomBarService extends Component {
 
 	private confirmString?: string;
 	private repeatString?: string;
-	private _isBetConfirmed: boolean= false;
+	private _isBetConfirmed: boolean = false;
 
-	onLoad(){
+	onLoad() {
 		this.repeatOrConfirmButton?.node.on(Button.EventType.CLICK, this.repeatOrConfirmBet, this);
 		this.clearButton?.node.on(Button.EventType.CLICK, this.clearBet, this);
+		this._initializeView()
+	}
+	private _initializeView(){
+
 	}
 
 	start() {
@@ -44,33 +48,40 @@ export class BottomBarService extends Component {
 		this.confirmString = I18nManager.instance.t('confirm').toUpperCase();
 		this.repeatString = I18nManager.instance.t('repeat').toUpperCase();
 
-		if(this.repeatLabel && this.repeatString) this.repeatLabel.string = this.repeatString;
-		if(this.removeLabel) this.removeLabel.string = I18nManager.instance.t('remove').toUpperCase()
-		if(this.clearLabel) this.clearLabel.string = I18nManager.instance.t('clear').toUpperCase()
-		if(this.autoBetLabel) this.autoBetLabel.string = I18nManager.instance.t('autoBet').toUpperCase()
+		if (this.repeatLabel && this.repeatString) this.repeatLabel.string = this.repeatString;
+		if (this.removeLabel) this.removeLabel.string = I18nManager.instance.t('remove').toUpperCase()
+		if (this.clearLabel) this.clearLabel.string = I18nManager.instance.t('clear').toUpperCase()
+		if (this.autoBetLabel) this.autoBetLabel.string = I18nManager.instance.t('autoBet').toUpperCase()
 	}
 
 	updateBetInteractivity() {
-		if (this._lobbyService.totalBetAmount > 0){
-			this.repeatLabel.string = this.confirmString;
-			this.repeatOrConfirmButton.interactable = true;
-			this.clearButton.interactable = true;
-		}else{
-			this.repeatLabel.string = this.repeatString;
+		if (this._lobbyService.betLocked) {
+			this.removeButton.interactable = false;
 			this.clearButton.interactable = false;
-			this.repeatOrConfirmButton.interactable = this._lobbyService.wasPreviousRoundBetPlaced
+			this.repeatOrConfirmButton.interactable = false;
+		} else {
+			if (this._lobbyService.totalBetAmount > 0) {
+				this.repeatLabel.string = this.confirmString;
+				this.repeatOrConfirmButton.interactable = true;
+				this.clearButton.interactable = true;
+			} else {
+				this.repeatLabel.string = this.repeatString;
+				this.clearButton.interactable = false;
+				this.repeatOrConfirmButton.interactable = this._lobbyService.wasPreviousRoundBetPlaced
+			}
 		}
 	}
-	private repeatOrConfirmBet(){
-		if(this._lobbyService.totalBetAmount > 0){
+
+	private repeatOrConfirmBet() {
+		if (this._lobbyService.totalBetAmount > 0) {
 			this._lobbyService.openConfirmBetsPopup()
-		}else{
+		} else {
 			console.log('repeating bet');
 		}
 	}
 
-	private clearBet(){
-		if(this._lobbyService.totalBetAmount <= 0 || this._isBetConfirmed) return;
+	private clearBet() {
+		if (this._lobbyService.totalBetAmount <= 0 || this._isBetConfirmed) return;
 		this._lobbyService.clearAllUnconfirmedBets();
 	}
 
@@ -78,17 +89,19 @@ export class BottomBarService extends Component {
 	get selectedBetAmount(): number {
 		return this.betChipBar.selectedBetAmount;
 	}
+
 	set lobbyService(value: LobbyService) {
 		this._lobbyService = value;
 	}
+
 	set isBetConfirmed(value: boolean) {
 		this._isBetConfirmed = value;
 		this.repeatOrConfirmButton.interactable = !this._isBetConfirmed;
 		this.clearButton.interactable = !this._isBetConfirmed;
 	}
+
 	get isBetConfirmed(): boolean {
 		return this._isBetConfirmed;
 	}
-
 
 }

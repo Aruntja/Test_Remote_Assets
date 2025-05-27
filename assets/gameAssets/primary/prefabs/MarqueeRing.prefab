@@ -79,7 +79,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1530,
+      "width": 1980,
       "height": 1080
     },
     "_anchorPoint": {
@@ -195,112 +195,6 @@
     "tileSpacing": 100,
     "iconFrames": [
       {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@a9470",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@ca79a",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2e491",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@85817",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f78bb",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@c2c33",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@119de",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@a9470",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@ca79a",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2e491",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@9191c",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f78bb",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@c2c33",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@119de",
-        "__expectedType__": "cc.SpriteFrame"
-      }
-    ],
-    "iconFrames1": [
-      {
         "__id__": 10
       },
       {
@@ -383,7 +277,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "8eUoud3YZN+K+bvhwX/HtR"
+    "fileId": "36KxQCgV1BpaEZDumWtp7N"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -391,7 +285,7 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 2
+    "betType": "D3"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -399,111 +293,7 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@a9470",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@119de",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2e491",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@85817",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 3
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f78bb",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@c2c33",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@119de",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@a9470",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
+    "betType": "A1"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -511,7 +301,7 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@ca79a",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 1
+    "betType": "A2"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -519,63 +309,15 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2e491",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 2
+    "betType": "A3"
   },
   {
     "__type__": "MarqueeSymbolConfig",
     "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@9191c",
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@85817",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 3
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 0
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 1
-  },
-  {
-    "__type__": "MarqueeSymbolConfig",
-    "image": {
-      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f78bb",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "betType": 2
+    "betType": "bank"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -583,7 +325,7 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@c2c33",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 0
+    "betType": "B1"
   },
   {
     "__type__": "MarqueeSymbolConfig",
@@ -591,7 +333,159 @@
       "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@119de",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "betType": 1
+    "betType": "B2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "B3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "D1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "D2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f78bb",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "D3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@a9470",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "A1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@ca79a",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "A2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2e491",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "A3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@9191c",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "player"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@c2c33",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "B1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@ca79a",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "B2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2c469",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "B3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@f9963",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@2f205",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C2"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@10fc3",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "C3"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@6b479",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "D1"
+  },
+  {
+    "__type__": "MarqueeSymbolConfig",
+    "image": {
+      "__uuid__": "45256c22-cd17-4f5c-82d4-34aa7bd93d7f@0dc5a",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "betType": "D2"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -602,6 +496,7 @@
       "__id__": 0
     },
     "fileId": "8fYCL9CYBCJI3/3Jdoh8Bd",
+    "instance": null,
     "targetOverrides": null
   }
 ]

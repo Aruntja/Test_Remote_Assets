@@ -1,5 +1,5 @@
 import { _decorator, Component, Sprite, Label, Enum, tween, Button } from 'cc';
-import {BetType, BetCharacters} from "db://assets/scripts/enums/BetOptions";
+import {BetType} from "db://assets/scripts/enums/BetOptions";
 import {BetButtonsService} from "db://assets/scripts/ui/Services/BetButtonsService";
 
 
@@ -24,12 +24,8 @@ export class BetButton extends Component {
 	@property(Label)
 	labelBetAmount!: Label;
 
-
 	@property({ type: Enum(BetType) })
-	betType: BetType = BetType.BANKER;
-
-	@property({ type: Enum(BetCharacters) })
-	betCharacter: BetCharacters = BetCharacters.WUKONG;
+	betType: BetType = BetType.BANK;
 
 	_button: Button;
 
@@ -44,29 +40,54 @@ export class BetButton extends Component {
 	private _progressObj = { value: 0 };
 
 
-
 	onLoad() {
-		this.updateBackground();
-		this.updateIcon();
+		this.updateVisuals()
 	}
 	start(){
 		this._button = this.getComponent(Button);
 	}
+	updateVisuals() {
 
-	updateBackground() {
-		if (!this.background || !this._buttonsService.backgrounds[this.betType]) {
-			console.warn('Missing sprite or background frame!');
+		let betTypeKey: string = this.betType;
+		if (!betTypeKey) {
+			console.warn(`Invalid betType: ${this.betType}`);
 			return;
 		}
-		this.background.spriteFrame = this._buttonsService.backgrounds[this.betType];
+		if (typeof this.betType === "number") {
+			betTypeKey = BetType[this.betType];
+		} else if (typeof this.betType === "string") {
+			betTypeKey = this.betType;
+		} else {
+			betTypeKey = undefined;
+		}
+
+		if (!betTypeKey) {
+			console.warn(`Invalid betType: ${this.betType}`);
+			return;
+		}
+		const indices = this._buttonsService.resolveBetTypeIndices(betTypeKey);
+		if (!indices) {
+			console.warn(`Invalid betType format: ${betTypeKey}`);
+			return;
+		}
+		const { iconIndex, backgroundIndex } = indices;
+
+		if (!this.background || !this._buttonsService.backgrounds?.[backgroundIndex]) {
+			console.warn(`Missing background for index ${backgroundIndex}`);
+		} else {
+			this.background.spriteFrame = this._buttonsService.backgrounds[backgroundIndex];
+		}
+
+		if (!this.icon || !this._buttonsService.icons?.[iconIndex]) {
+			console.warn(`Missing icon for index ${iconIndex}`);
+		} else {
+			this.icon.spriteFrame = this._buttonsService.icons[iconIndex];
+			this.iconOriginalScale = this.icon.node.getScale().clone();
+		}
 	}
-	updateIcon() {
-		if (!this.icon || !this._buttonsService.icons[this.betCharacter]) {
-			console.warn('Missing sprite or ICON frame!');
-			return;
-		}
-		this.icon.spriteFrame = this._buttonsService.icons[this.betCharacter];
-		this.iconOriginalScale = this.icon.node.getScale().clone();
+
+	updateBetOptions(amount: string){
+		this.labelRatio.string = amount;
 	}
 
 	showBetAmount(amount: number){

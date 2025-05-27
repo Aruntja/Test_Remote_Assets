@@ -2,6 +2,7 @@ import { _decorator, Component, Node, Prefab, Button,SpriteFrame, instantiate, v
 import {BetChip} from "db://assets/scripts/ui/BetChip";
 import {UIUtil} from "db://assets/scripts/utils/UIUtilService";
 import {BetChipConfig} from "db://assets/scripts/enums/Miscellaneous";
+import {GameDataService} from "db://assets/scripts/services/GameDataService";
 const { ccclass, property } = _decorator;
 
 @ccclass('BetChipBar')
@@ -48,7 +49,7 @@ export class BetChipBar extends Component {
 	}
 
 	initializeChips(){
-		this._chipValues = [10, 25, 50, 100, 250, 500];
+		this._chipValues = GameDataService.instance.initData?.playerInfo?.possibleBets || [];
 
 		this._chipValues.forEach((value, index) => {
 			const chipConfig = this.chipTypes.find(config => config.value === value);

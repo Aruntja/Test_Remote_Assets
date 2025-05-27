@@ -4,6 +4,7 @@ import {GameConfig} from "db://assets/scripts/game/config/GameConfigProxy";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {SocketService} from "db://assets/scripts/services/SocketService";
+import {GameDataService} from "db://assets/scripts/services/GameDataService";
 
 
 export class GameNetworkHandler {
@@ -20,6 +21,7 @@ export class GameNetworkHandler {
 	//Socket Functionalities
 	private async _connectToSocket(): Promise<void> {
 		const socketURL = GameConfig.env.socketURL;
+		console.log(socketURL)
 		if (!socketURL) {
 			console.warn('[GameNetworkHandler] Socket URL is not defined');
 			return;
@@ -47,28 +49,31 @@ export class GameNetworkHandler {
 		const data = await this.handleApiCall(
 			() => ApiService.instance.post(url, this._buildGameInitRequest()),			'init'
 		);
-		this.gameManager.initializationComplete = true;
 		if (data) {
-			await this._connectToSocket()
+			this.gameManager.initializationComplete = true;
+			GameDataService.instance.setInitData(data);
+			// await this._connectToSocket()
 			if(SocketService.instance.connected){
 			}
 		}
 	}
 
 	private _buildGameInitRequest(): any {
-		return {
-			gameId: GameConfig.gameID,
-			token: GameConfig.playerData.token,
-		};
 		// return {
-		// 	gameId: this.base64Encode(GameConfig.gameID),
-		// 	token: this.base64Encode(GameConfig.playerData.token),
+		// 	gameId: GameConfig.gameID,
+		// 	token: GameConfig.playerData.token,
 		// };
+		return {
+			gameId: this.base64Encode(GameConfig.gameID),
+			token: this.base64Encode(GameConfig.playerData.token),
+		};
 	}
 
 	public async handleApiCall<T>(apiFunc: () => Promise<T>, p0: string): Promise<T | null> {
 		try {
-			return await apiFunc();
+			const responseData = await apiFunc();
+			console.warn(`API call successful for ${p0}`, responseData);
+			return responseData;
 		} catch (err: any) {
 			const status = err?.status || null;
 			const message = err?.message || 'Unknown error';

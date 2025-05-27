@@ -1,5 +1,6 @@
 import { _decorator, Component, Sprite, SpriteFrame, Color, tween, Vec3 } from 'cc';
-import {BetType, MarqueeSymbolConfig} from "db://assets/scripts/enums/BetOptions";
+import {BetType} from "db://assets/scripts/enums/BetOptions";
+import {MarqueeSymbolConfig} from "db://assets/scripts/enums/Miscellaneous";
 const { ccclass, property } = _decorator;
 
 @ccclass('BoardTile')
@@ -18,7 +19,7 @@ export class BoardTile extends Component {
 
     public tileIndex: number = 0;
     private _defaultScale: Vec3 = new Vec3(1, 1, 1);
-    betType: BetType = BetType.BANKER;
+    betType: BetType = BetType.BANK;
 
     onLoad() {
         this._defaultScale = this.node.scale.clone();

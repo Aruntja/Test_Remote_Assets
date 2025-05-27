@@ -1,10 +1,11 @@
-import { _decorator, Component, Input, Sprite, SpriteFrame } from 'cc';
-const { ccclass, property } = _decorator;
+import {_decorator, Component, Sprite, SpriteFrame} from 'cc';
 import {MarqueeRing} from "db://assets/scripts/game/MarqueeRing";
 import {SlotMachine} from "db://assets/scripts/game/SlotMachine";
-import { BetType } from '../enums/BetOptions';
+import {BetType} from '../enums/BetOptions';
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
+
+const { ccclass, property } = _decorator;
 
 @ccclass('BoardManager')
 export class BoardManager extends Component {
@@ -62,12 +63,23 @@ export class BoardManager extends Component {
         await this.slotMachine.spin()
     }
     updateCurrentTile(betType: BetType) {
-        if(betType == BetType.SPECIAL) return;
-        this.winImage.spriteFrame = this.winImages[betType];
+        if (betType === BetType.PLAYER || betType === BetType.BANK || betType=== BetType.TIE) return;
+        this.winImage.spriteFrame = this.winImages[this.getNumberIndex(betType)];
     }
+
+    private getNumberIndex(betType: BetType): number {
+        const match = betType.match(/\d+/); // Extract digits
+        if (match) {
+            const number = parseInt(match[0], 10);
+            return number - 1; // 1-based to 0-based
+        }
+        return -1; // Invalid case
+    }
+
+
     async onReelSpinComplete(){
         this.isSpinning = false;
-        await this.marqueeRing.showWin(15)
+        await this.marqueeRing.showWin(10)
     }
 
     async marqueeRingSpinComplete() {

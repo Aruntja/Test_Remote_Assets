@@ -32,7 +32,7 @@ export class LobbyService extends Component {
 	closedBetNode!: Node;
 
 	private _totalBetAmount: number = 0;
-	private _betTimerCountDownDone: boolean = false;
+	private _betLocked: boolean = false;
 	private _wasPreviousRoundBetPlaced: boolean = false;
 
 	onLoad(){
@@ -52,8 +52,9 @@ export class LobbyService extends Component {
 	}
 
 	betClosed(){
-		// this._betTimerCountDownDone = true;
+		this._betLocked = true;
 		EventBus.emit(GameEvents.ON_BET_COUNTDOWN_ENDED)
+		this.bottomBarService.updateBetInteractivity()
 	}
 
 
@@ -69,7 +70,7 @@ export class LobbyService extends Component {
 		this.betButtonsService.setButtonsInteractable(false)
 	}
 	onBetPlaced(){
-		if(this._betTimerCountDownDone) {
+		if(this._betLocked) {
 			this.betButtonsService.setButtonsInteractable(false)
 			this.closedBetNode.active = true
 			UIUtil.zoomInOut(this.closedBetNode, 1.3, 0.3, ()=>{
@@ -100,11 +101,10 @@ export class LobbyService extends Component {
 		this.confirmBetsYesBtn?.node.on(Button.EventType.CLICK, this.sendConfirmationRequest, this );
 		this.confirmBetsNoBtn?.node.on(Button.EventType.CLICK, this.sendConfirmationRequest, this );
 	}
-	onDestroy(){
+	onDisable(){
 		this.confirmBetsYesBtn?.node.off(Button.EventType.CLICK, this.sendConfirmationRequest, this );
 		this.confirmBetsNoBtn?.node.off(Button.EventType.CLICK, this.sendConfirmationRequest, this );
 	}
-
 	//Getters and Setters
 	get totalBetAmount(): number {
 		return this._totalBetAmount;
@@ -112,8 +112,8 @@ export class LobbyService extends Component {
 	get wasPreviousRoundBetPlaced(): boolean {
 		return this._wasPreviousRoundBetPlaced;
 	}
-	set betTimerCountDownDone(value: boolean) {
-		this._betTimerCountDownDone = value;
+	set betLocked(value: boolean) {
+		this._betLocked = value;
 	}
 	set totalBetAmount(value: number) {
 		this._totalBetAmount = value;

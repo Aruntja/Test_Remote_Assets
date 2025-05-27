@@ -690,8 +690,8 @@
     "labelBetAmount": {
       "__id__": 17
     },
-    "betType": 0,
     "betCharacter": 0,
+    "betType": "bank",
     "_id": ""
   },
   {

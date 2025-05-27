@@ -3,7 +3,7 @@ const { ccclass, property } = _decorator;
 import { EventBus } from '../core/EventBus';
 import { BoardTile } from 'db://assets/scripts/ui/BoardTile';
 import {BoardManager} from "db://assets/scripts/managers/BoardManager";
-import {MarqueeSymbolConfig} from "db://assets/scripts/enums/BetOptions";
+import {MarqueeSymbolConfig} from "db://assets/scripts/enums/Miscellaneous";
 
 @ccclass('MarqueeRing')
 export class MarqueeRing extends Component {
@@ -20,11 +20,8 @@ export class MarqueeRing extends Component {
 	@property
 	tileSpacing: number = 100;
 
-	@property([SpriteFrame])
-	iconFrames: SpriteFrame[] = [];
-
-	@property([MarqueeSymbolConfig])
-	iconFrames1: MarqueeSymbolConfig[] = [];
+	@property({ type: [MarqueeSymbolConfig] }) // 👈 Array of class instances
+	iconFrames: MarqueeSymbolConfig[] = [];
 
 	tilePositions: Vec3[] = [];
 
@@ -91,14 +88,13 @@ export class MarqueeRing extends Component {
 
 			const tile: BoardTile = tileNode.getComponent(BoardTile);
 			tile.tileIndex = i;
-
-			if (this.iconFrames1 && this.iconFrames1[i]) {
-				tile.setData(this.iconFrames1[i]);
+			if (this.iconFrames && this.iconFrames[i]) {
+				tile.setData(this.iconFrames[i]);
 			}
 
 			this._tiles.push(tile);
 			if(i == 4 || i == 17){
-				tileNode.setScale(1.3,1.3)
+				tileNode.setScale(1.4,1.4)
 				if(i == 17){
 					tileNode.getComponent(UITransform).setAnchorPoint(0.4, 0.4)
 					tileNode.setScale(1.4,1.3)
