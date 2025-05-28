@@ -1,5 +1,5 @@
 [
-  {"name": [ "localhost", "scene", "gamesv2.microslot.co", "games.microslot.co" ], "config" : {
+  {"name": [ "localhost", "scene", "games-cc.microslot.co", "games.microslot.co" ], "config" : {
     "passPhrase" : "microslot1234",
     "baseURL" : "https://service.microslot.co",
     "socketURL" : "wss://service.microslot.co",
