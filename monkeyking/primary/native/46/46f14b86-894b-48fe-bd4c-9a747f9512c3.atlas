@@ -1,0 +1,149 @@
+
+bg 3.png
+size: 2038,1817
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg2_cl_l
+  rotate: false
+  xy: 765, 1673
+  size: 525, 142
+  orig: 617, 222
+  offset: 70, 1
+  index: -1
+bg2_cl_r
+  rotate: false
+  xy: 2, 1725
+  size: 568, 90
+  orig: 610, 106
+  offset: 23, 1
+  index: -1
+bg3_castle
+  rotate: true
+  xy: 1560, 970
+  size: 564, 476
+  orig: 568, 480
+  offset: 2, 2
+  index: -1
+bg3_cloud_3
+  rotate: false
+  xy: 2, 1412
+  size: 1163, 259
+  orig: 1190, 270
+  offset: 8, 1
+  index: -1
+bg3_cloud_4
+  rotate: false
+  xy: 2, 2
+  size: 1558, 540
+  orig: 1559, 544
+  offset: 0, 2
+  index: -1
+bg3_cloud_5
+  rotate: false
+  xy: 1292, 1664
+  size: 288, 151
+  orig: 299, 155
+  offset: 9, 2
+  index: -1
+bg3_cloud_6
+  rotate: false
+  xy: 572, 1682
+  size: 191, 133
+  orig: 195, 137
+  offset: 2, 2
+  index: -1
+bg3_cloud_front копия
+  rotate: false
+  xy: 2, 544
+  size: 1558, 397
+  orig: 1559, 402
+  offset: 0, 1
+  index: -1
+bg3_gr_l
+  rotate: false
+  xy: 1582, 1536
+  size: 412, 279
+  orig: 414, 281
+  offset: 1, 1
+  index: -1
+bg3_gr_l к
+  rotate: false
+  xy: 2, 943
+  size: 774, 467
+  orig: 776, 469
+  offset: 1, 1
+  index: -1
+bg3_mountain_3
+  rotate: false
+  xy: 1167, 1289
+  size: 391, 373
+  orig: 395, 377
+  offset: 2, 2
+  index: -1
+
+bg 32.png
+size: 1593,1444
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg2_l
+  rotate: false
+  xy: 2, 2
+  size: 1589, 1440
+  orig: 1591, 1442
+  offset: 1, 1
+  index: -1
+
+bg 33.png
+size: 1562,1444
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg2_r
+  rotate: false
+  xy: 2, 2
+  size: 1558, 1440
+  orig: 1560, 1442
+  offset: 1, 1
+  index: -1
+
+bg 34.png
+size: 2008,1487
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg3_bg3_sky
+  rotate: false
+  xy: 2, 2
+  size: 1558, 720
+  orig: 1559, 721
+  offset: 0, 1
+  index: -1
+bg3_mountain_2_l
+  rotate: true
+  xy: 811, 724
+  size: 761, 1195
+  orig: 764, 1200
+  offset: 1, 2
+  index: -1
+bg3_mountain_5
+  rotate: true
+  xy: 2, 820
+  size: 665, 807
+  orig: 669, 813
+  offset: 2, 3
+  index: -1
+
+bg 35.png
+size: 1216,1318
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg3_mountain_2_r
+  rotate: false
+  xy: 2, 2
+  size: 1212, 1314
+  orig: 1223, 1316
+  offset: 10, 1
+  index: -1
