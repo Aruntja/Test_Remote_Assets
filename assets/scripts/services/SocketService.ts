@@ -1,6 +1,6 @@
 import { Singleton } from '../core/Singleton';
 import { EventBus } from '../core/EventBus';
-import * as Socket  from "socket.io-client/dist/socket.io.esm.min.js";
+import * as Socket  from "@ms-mgc/game-core-socket.io-client/dist/socket.io.esm.min.js";
 
 interface QueuedMessage {
 	event: string;
@@ -48,27 +48,17 @@ export class SocketService extends Singleton<SocketService> {
 		this.socket.on('connect', () => {
 			this.isConnected = true;
 			this.flushMessageQueue();
-			EventBus.emit("SOCKET_CONNECTED");
-			EventBus.emit("HIDE_LOADER");
-
-			// Re-authenticate if we have a token
-			if (this.authToken) {
-				this.authenticate(this.authToken);
-			}
 		});
 
 		this.socket.on('disconnect', () => {
 			this.isConnected = false;
-			EventBus.emit("SOCKET_DISCONNECTED");
 		});
 
 		this.socket.on('connect_error', (err: Error) => {
-			EventBus.emit("SOCKET_ERROR", err);
-			EventBus.emit("HIDE_LOADER");
+
 		});
 
 		this.socket.on('reconnect_attempt', (attempt: number) => {
-			EventBus.emit("SOCKET_RECONNECTING", attempt);
 		});
 
 		// Network quality monitoring

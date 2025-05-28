@@ -1,14 +1,21 @@
 import { IEnvironmentVariables } from "../../types/IEnvironmentVariables";
 import {GameConfig} from "db://assets/scripts/game/config/GameConfigProxy";
+import {GameManager} from "db://assets/scripts/managers/GameManager";
 
-export class EnvConfig {
+export class EnvService {
 
 	public async loadConfig(): Promise<void> {
 		const currentHost = window.location.hostname;
 		console.log(`[EnvConfig] Detected Host: ${currentHost}`);
 		let configs: any[] = [];
 		try {
-			const response = await fetch('./env/envConfig.json');
+			let remoteUrl = '';
+			if(currentHost === 'localhost'  || currentHost === 'games-cc.microslot.co'){
+				remoteUrl = 'https://aruntja.github.io/Test_Remote_Assets/envConfig.json'
+			}else{
+			}
+				remoteUrl ='https://games-cc.microslot.co/env/envConfig.json';
+			const response = await fetch(remoteUrl);
 			configs = await response.json();
 			console.log('[EnvConfig] Loaded remote envConfig.json');
 		} catch (e) {
@@ -37,4 +44,4 @@ export class EnvConfig {
 	}
 
 }
-export const EnvConfigProxy = new EnvConfig();
+export const EnvConfigProxy = new EnvService();

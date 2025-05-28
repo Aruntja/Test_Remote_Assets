@@ -5,7 +5,7 @@ import {AssetLoader} from "db://assets/scripts/core/AssetLoader";
 import {InitState} from "db://assets/scripts/state/InitState";
 import {States} from "db://assets/scripts/state/States";
 import {GameNetworkHandler} from "db://assets/scripts/network/GameNetworkHandler";
-import {EnvConfigProxy} from "db://assets/scripts/env/EnvConfig";
+import {EnvConfigProxy} from "db://assets/scripts/env/EnvService";
 import {EventBus} from "db://assets/scripts/core/EventBus";
 import {GameEvents} from "db://assets/scripts/events/GameEvents";
 import {BetState} from "db://assets/scripts/state/BetState";
@@ -58,7 +58,7 @@ export class GameManager extends ComponentSingleton<GameManager> {
 
     startBetState() {
         const networkStatus = this._gameNetworkHandler.getNetworkStatus();
-        if (networkStatus.apiConnected && !networkStatus.socketConnected) {
+        if (networkStatus.apiConnected && networkStatus.socketConnected) {
                 this.machine.change(States.Bet);
         } else {
             if (this._gameNetworkHandler.initError) {

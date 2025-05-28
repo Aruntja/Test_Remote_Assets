@@ -17,7 +17,7 @@ export enum GameEvents {
 
 	// Network Events
 	ON_API_ERROR = 'api-error',
-	SOCKET_CONNECTED = 'socket-connected',
+	SOCKET_CONNECTED = 'connect',
 	SOCKET_DISCONNECTED = 'socket-disconnected',
 	SOCKET_ERROR = 'socket-error',
 	SOCKET_RECONNECTING = 'socket-reconnecting',

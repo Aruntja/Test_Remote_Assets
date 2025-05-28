@@ -9,7 +9,7 @@ import { GameDataService } from "db://assets/scripts/services/GameDataService";
 export class GameNetworkHandler {
 	private initUrl: string = 'init';
 	private socketReconnectAttempts: number = 0;
-	private maxSocketReconnectAttempts: number = 5;
+	private maxSocketReconnectAttempts: number = 0;
 	public initError: boolean = false;
 	public errorDataMap: Record<string, any> = {};
 
@@ -21,11 +21,9 @@ export class GameNetworkHandler {
 
 	private initializeNetworkEventListeners(): void {
 		// Socket Event Listeners
-		EventBus.on(GameEvents.SOCKET_CONNECTED, this.handleSocketConnected.bind(this));
 		EventBus.on(GameEvents.SOCKET_DISCONNECTED, this.handleSocketDisconnected.bind(this));
 		EventBus.on(GameEvents.SOCKET_ERROR, this.handleSocketError.bind(this));
 		EventBus.on(GameEvents.SOCKET_RECONNECTING, this.handleSocketReconnecting.bind(this));
-
 	}
 
 	//#region Socket Management
@@ -42,7 +40,7 @@ export class GameNetworkHandler {
 	}
 
 	private async initializeSocketConnection(): Promise<void> {
-		const socketURL = `wss://servicetmp.microslot.co/${GameConfig.gameID}`;
+		const socketURL = `${GameConfig.env.socketURL}/${GameConfig.gameID}`;
 
 		if (!socketURL) {
 			throw new Error('Socket URL is not defined');
@@ -59,11 +57,11 @@ export class GameNetworkHandler {
 			reconnectionAttempts: this.maxSocketReconnectAttempts
 		});
 
-		// Wait for connection or timeout
 		await Promise.race([
 			new Promise<void>((resolve) => {
 				const handler = () => {
 					SocketService.instance.off(GameEvents.SOCKET_CONNECTED, handler);
+					this.handleSocketConnected();
 					resolve();
 				};
 				SocketService.instance.on(GameEvents.SOCKET_CONNECTED, handler);
@@ -78,9 +76,9 @@ export class GameNetworkHandler {
 		this.socketReconnectAttempts = 0;
 		EventBus.emit(GameEvents.NETWORK_STATUS_CHANGED, true);
 
-		// Register core socket listeners
-		SocketService.instance.on(GameEvents.PLAYER_DATA_UPDATED, this.handlePlayerUpdate.bind(this));
-		SocketService.instance.on(GameEvents.GAME_STATE_UPDATED, this.handleGameStateUpdate.bind(this));
+		// // Register core socket listeners
+		// SocketService.instance.on(GameEvents.PLAYER_DATA_UPDATED, this.handlePlayerUpdate.bind(this));
+		// SocketService.instance.on(GameEvents.GAME_STATE_UPDATED, this.handleGameStateUpdate.bind(this));
 	}
 
 	private handleSocketDisconnected(): void {
