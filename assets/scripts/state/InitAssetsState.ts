@@ -20,10 +20,8 @@ export class InitAssetsState extends BaseState {
 
 	async onEnterImpl(): Promise<void> {
 		this.setupEventListeners()
-		await I18nManager.instance.loadLanguage(GameDataService.instance.playerInfo.language.toLowerCase());
-		if(GameManager.instance){
-			GameManager.instance.assetLoader.initAssets()
-		}
+		if(this.gameManager.initializationComplete) await I18nManager.instance.loadLanguage(GameDataService.instance.playerInfo.language.toLowerCase());
+		this.gameManager.assetLoader.initAssets()
 
 	}
 	onAssetsLoaded(bundleName: string){

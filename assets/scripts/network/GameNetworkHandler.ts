@@ -1,92 +1,210 @@
-import {GameManager} from "db://assets/scripts/managers/GameManager";
-import {ApiService} from "db://assets/scripts/services/ApiService";
-import {GameConfig} from "db://assets/scripts/game/config/GameConfigProxy";
-import {EventBus} from "db://assets/scripts/core/EventBus";
-import {GameEvents} from "db://assets/scripts/events/GameEvents";
-import {SocketService} from "db://assets/scripts/services/SocketService";
-import {GameDataService} from "db://assets/scripts/services/GameDataService";
-
+import { GameManager } from "db://assets/scripts/managers/GameManager";
+import { ApiService } from "db://assets/scripts/services/ApiService";
+import { GameConfig } from "db://assets/scripts/game/config/GameConfigProxy";
+import { EventBus } from "db://assets/scripts/core/EventBus";
+import { GameEvents } from "db://assets/scripts/events/GameEvents";
+import { SocketService } from "db://assets/scripts/services/SocketService";
+import { GameDataService } from "db://assets/scripts/services/GameDataService";
 
 export class GameNetworkHandler {
-
 	private initUrl: string = 'init';
-	initError: boolean = false;
+	private socketReconnectAttempts: number = 0;
+	private maxSocketReconnectAttempts: number = 5;
+	public initError: boolean = false;
 	public errorDataMap: Record<string, any> = {};
 
 	public constructor(
 		protected gameManager: GameManager
 	) {
-		SocketService.instance.setNetWorkHandler(this);
+		this.initializeNetworkEventListeners();
 	}
-	//Socket Functionalities
-	private async _connectToSocket(): Promise<void> {
+
+	private initializeNetworkEventListeners(): void {
+		// Socket Event Listeners
+		EventBus.on(GameEvents.SOCKET_CONNECTED, this.handleSocketConnected.bind(this));
+		EventBus.on(GameEvents.SOCKET_DISCONNECTED, this.handleSocketDisconnected.bind(this));
+		EventBus.on(GameEvents.SOCKET_ERROR, this.handleSocketError.bind(this));
+		EventBus.on(GameEvents.SOCKET_RECONNECTING, this.handleSocketReconnecting.bind(this));
+
+	}
+
+	//#region Socket Management
+	public async initializeNetworkConnection(): Promise<void> {
+		try {
+			await this.requestGameInit();
+			await this.initializeSocketConnection();
+		} catch (error) {
+			if(!this.initError){
+				this.errorDataMap['socket'] = error;
+			}
+			console.error('Network initialization failed:', error);
+		}
+	}
+
+	private async initializeSocketConnection(): Promise<void> {
 		const socketURL = `wss://servicetmp.microslot.co/${GameConfig.gameID}`;
-		console.log(socketURL)
+
 		if (!socketURL) {
-			console.warn('[GameNetworkHandler] Socket URL is not defined');
-			return;
+			throw new Error('Socket URL is not defined');
 		}
 
-		console.log('[GameNetworkHandler] Connecting to socket...');
-		await SocketService.instance.connect(socketURL);
-	}
-	public sendSocketMessage(message: any): void {
-		SocketService.instance.send(message);
+		console.log('[GameNetworkHandler] Initializing socket connection...');
+		SocketService.instance.initialize(socketURL, {
+			auth: {
+				token: GameConfig.playerData.token,
+				playerId: GameDataService.instance.playerInfo.externalPlayerId,
+				gameId: GameConfig.gameID
+			},
+			reconnectionDelay: 1000,
+			reconnectionAttempts: this.maxSocketReconnectAttempts
+		});
+
+		// Wait for connection or timeout
+		await Promise.race([
+			new Promise<void>((resolve) => {
+				const handler = () => {
+					SocketService.instance.off(GameEvents.SOCKET_CONNECTED, handler);
+					resolve();
+				};
+				SocketService.instance.on(GameEvents.SOCKET_CONNECTED, handler);
+			}),
+			new Promise<void>((_, reject) =>
+				setTimeout(() => reject('Socket connection timeout'), 10000))
+		]);
 	}
 
-	public disconnectSocket(): void {
-		SocketService.instance.disconnect();
+	private handleSocketConnected(): void {
+		console.log('Socket connected successfully');
+		this.socketReconnectAttempts = 0;
+		EventBus.emit(GameEvents.NETWORK_STATUS_CHANGED, true);
+
+		// Register core socket listeners
+		SocketService.instance.on(GameEvents.PLAYER_DATA_UPDATED, this.handlePlayerUpdate.bind(this));
+		SocketService.instance.on(GameEvents.GAME_STATE_UPDATED, this.handleGameStateUpdate.bind(this));
 	}
 
-	//API Functionalities
-	base64Encode(text: string): string {
-		return btoa(unescape(encodeURIComponent(text)));
+	private handleSocketDisconnected(): void {
+		console.log('Socket disconnected');
+		EventBus.emit(GameEvents.NETWORK_STATUS_CHANGED, false);
 	}
 
+	private handleSocketError(error: Error): void {
+		console.error('Socket error:', error);
+		EventBus.emit(GameEvents.SOCKET_ERROR, {
+			type: 'socket',
+			error: error
+		});
+	}
+
+	private handleSocketReconnecting(attempt: number): void {
+		this.socketReconnectAttempts = attempt;
+		console.log(`Reconnection attempt ${attempt}/${this.maxSocketReconnectAttempts}`);
+
+		if (attempt >= this.maxSocketReconnectAttempts) {
+			EventBus.emit(GameEvents.NETWORK_RECONNECT_FAILED);
+		}
+	}
+	//#endregion
+
+	//#region API Management
 	public async requestGameInit(): Promise<any> {
-		const url = `${GameConfig.env.baseURL}/api/${GameConfig.gameID}/${this.initUrl}`;
+		const url = `${GameConfig.env?.baseURL}/api/${GameConfig.gameID}/${this.initUrl}`;
 		const data = await this.handleApiCall(
-			() => ApiService.instance.post(url, this._buildGameInitRequest()),			'init'
+			() => ApiService.instance.post(url, this.buildGameInitRequest()),
+			'init'
 		);
+
 		if (data) {
 			this.gameManager.initializationComplete = true;
 			GameDataService.instance.setInitData(data);
-			await this._connectToSocket()
-			// if(SocketService.instance.connected){
-			// }
+		}else{
+			this.initError = true
 		}
+
 	}
 
-	private _buildGameInitRequest(): any {
+	private buildGameInitRequest(): any {
 		return {
 			gameId: this.base64Encode(GameConfig.gameID),
 			token: this.base64Encode(GameConfig.playerData.token),
 		};
 	}
 
-	public async handleApiCall<T>(apiFunc: () => Promise<T>, p0: string): Promise<T | null> {
+	public async handleApiCall<T>(apiFunc: () => Promise<T>, endpoint: string): Promise<T | null> {
 		try {
-			const responseData = await apiFunc();
-			console.warn(`API call successful for ${p0}`, responseData);
-			return responseData;
-		} catch (err: any) {
-			const status = err?.status || null;
-			const message = err?.message || 'Unknown error';
-			const body = typeof err?.body === 'object' && err.body !== null ? err.body : null;
+			const response = await apiFunc();
 
-			const errorInfo = { status, message, body };
-
-			this.errorDataMap[p0] = errorInfo;
-
-			if (p0 === 'init') {
-				this.initError = true;
-				return null;
-			} else {
-				console.error("[GameNetworkHandler] API call failed:", errorInfo);
-				EventBus.emit(GameEvents.ON_API_ERROR, errorInfo);
-				return null;
+			if ((response as any)?.errorCode) {
+				throw {
+					status: (response as any).errorCode,
+					message: (response as any).error,
+					body: response
+				};
 			}
+
+			console.log(`API call successful for ${endpoint}`, response);
+			return response;
+		} catch (err: any) {
+			this.handleApiError(err, endpoint);
+			return null;
 		}
 	}
 
+	private handleApiError(error: any, endpoint: string): void {
+		const errorInfo = {
+			status: error?.status || error?.body?.errorCode || 500,
+			message: error?.message || error?.body?.error || 'Unknown error',
+			body: error?.body || null,
+			endpoint: endpoint
+		};
+
+		console.error(`[API Error] ${endpoint}:`, errorInfo);
+		if(endpoint === 'init') {
+			this.errorDataMap[endpoint] = errorInfo;
+		}
+
+		if (errorInfo.status === 401 || errorInfo.status === 403) {
+			EventBus.emit(GameEvents.AUTHENTICATION_FAILED);
+		}
+	}
+	//#endregion
+
+	//#region Common Utilities
+	public base64Encode(text: string): string {
+		return btoa(unescape(encodeURIComponent(text)));
+	}
+
+	public sendSocketMessage(event: string, data?: any): void {
+		if (!SocketService.instance.getConnectionStatus()) {
+			console.warn('Attempted to send message while disconnected');
+			EventBus.emit(GameEvents.QUEUE_SOCKET_MESSAGE, { event, data });
+			return;
+		}
+
+		SocketService.instance.emit(event, data, (response: any) => {
+			if (response.error) {
+				console.error('Socket error response:', response.error);
+			}
+		});
+	}
+
+	public getNetworkStatus(): { apiConnected: boolean, socketConnected: boolean } {
+		return {
+			apiConnected: !this.initError,
+			socketConnected: SocketService.instance.getConnectionStatus()
+		};
+	}
+	//#endregion
+
+	//#region Game-Specific Handlers
+	private handlePlayerUpdate(data: any): void {
+		GameDataService.instance.updatePlayerData(data);
+		EventBus.emit(GameEvents.PLAYER_DATA_UPDATED, data);
+	}
+
+	private handleGameStateUpdate(data: any): void {
+		GameDataService.instance.updateGameState(data);
+		EventBus.emit(GameEvents.GAME_STATE_UPDATED, data);
+	}
+	//#endregion
 }

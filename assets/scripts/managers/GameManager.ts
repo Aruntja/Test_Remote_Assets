@@ -56,13 +56,20 @@ export class GameManager extends ComponentSingleton<GameManager> {
         }
     }
 
-    startBetState(){
-        if(this.initializationComplete) {
-            this.machine.change(States.Bet)
-        } else if(this._gameNetworkHandler.initError) {
-            this.__showErrorPopUp(this._gameNetworkHandler.errorDataMap['init'])
+    startBetState() {
+        const networkStatus = this._gameNetworkHandler.getNetworkStatus();
+        if (networkStatus.apiConnected && !networkStatus.socketConnected) {
+                this.machine.change(States.Bet);
+        } else {
+            if (this._gameNetworkHandler.initError) {
+                this.__showErrorPopUp(this._gameNetworkHandler.errorDataMap['init'], false);
+            }else{
+                this.__showErrorPopUp(this._gameNetworkHandler.errorDataMap['socket'], true);
+                console.warn("API or Socket not connected");
+            }
         }
     }
+
     update(dt: number) {
         this.machine.update(dt);
     }
@@ -103,7 +110,7 @@ export class GameManager extends ComponentSingleton<GameManager> {
     }
 
 
-    private async __showErrorPopUp(error: any) {
+    public async __showErrorPopUp(error: any, isSocketError: boolean) {
         if (!this._errorPopup && this.ErrorPopUpPrefab) {
             this._errorPopup = instantiate(this.ErrorPopUpPrefab);
             director.getScene().addChild(this._errorPopup);
@@ -111,7 +118,7 @@ export class GameManager extends ComponentSingleton<GameManager> {
             if(!this._errorPopupService) this._errorPopupService = this._errorPopup.getComponent(ErrorPopUpService);
         }
         if(this._errorPopup) UIUtil._fadeIn(this._errorPopup, 0.3)
-        if(this._errorPopupService) this._errorPopupService.showPopUp(error)
+        if(this._errorPopupService) this._errorPopupService.showPopUp(error, isSocketError)
     }
 
     //Getters & setters

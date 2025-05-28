@@ -4,6 +4,9 @@
 
   /* Add your custom configuration here. */
   "compilerOptions": {
-    "strict": false
+    "strict": false,
+    "types": ["socket.io-client"],
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Node"
   }
 }

@@ -7,7 +7,7 @@ export class InitState extends BaseState {
 	private subMachine: StateMachine = new StateMachine();
 
 	async onEnterImpl(): Promise<void> {
-		await this.gameManager.gameNetworkHandler.requestGameInit();
+		await this.gameManager.gameNetworkHandler.initializeNetworkConnection();
 		this.subMachine.register(States.Loading, new InitAssetsState(this.subMachine, this.gameManager));
 		this.subMachine.change(States.Loading);
 	}

@@ -34,9 +34,14 @@ export class ErrorPopUpService extends Component {
 	start() {
 		this.headerLbl.string = this.headerTxt
 	}
-	showPopUp(error: any){
+	showPopUp(error: any, isSocketError: boolean){
 		console.log(error)
-		this.errorLbl.string = `${this.errorCodeTxt}: ${error.status}`
+		if(isSocketError){
+			this.messageLbl.string = error
+		}
+		else{
+			this.errorLbl.string = `${this.errorCodeTxt}: ${error.status}`
+		}
 	}
 
 	//Getters and  Setters
