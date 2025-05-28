@@ -1,8 +1,8 @@
 [
   {"name": [ "localhost", "scene", "games-cc.microslot.co", "games.microslot.co" ], "config" : {
     "passPhrase" : "microslot1234",
-    "baseURL" : "https://service.microslot.co",
-    "socketURL" : "wss://service.microslot.co",
+    "baseURL" : "http://localhost:8001",
+    "socketURL" : "http://localhost:8001",
     "historyURL" : "https://history.microslot.co/game-history",
     "historyAPIURL": "https://service.microslot.co/publicapi/reports/inGame/betHistory",
     "tableHistoryAPIURL": "https://service.microslot.co/publicapi/reports/inGame/tableBetHistory",
